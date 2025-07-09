@@ -14,3 +14,9 @@ h1 span {
   background-color: #007bff;
   border-color: #007bff;
 }
+
+.nav-link:hover {
+  background-color: #dbeafe; 
+  border-radius: 0.375rem;  
+  transition: background-color 0.3s ease; 
+}
