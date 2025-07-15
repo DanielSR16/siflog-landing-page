@@ -1,0 +1,27 @@
+<body>
+    <div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title fw-bold" id="modalPedidoLabel">Revisar Pedido</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            <p class="text-muted mb-4">Revisa los medicamentos seleccionados y configura las cantidades.</p>
+            <div id="pedidoResumen" class="d-flex flex-column gap-3"></div>
+            <div class="p-3 bg-light rounded border mt-4">
+            <h6 class="fw-bold mb-1">Total del Pedido</h6>
+            <div class="d-flex justify-content-between">
+                <span id="totalResumen" class="text-muted small"></span>
+                <strong class="text-primary" id="totalPrecio"></strong>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Volver atrás</button>
+            <button type="button" class="btn btn-success">Continuar</button>
+        </div>
+        </div>
+    </div>
+    </div>
+</body>
