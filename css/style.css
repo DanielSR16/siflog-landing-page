@@ -26,3 +26,7 @@ h1 span {
   box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
 }
 
+  .carousel-inner img {
+    height: 500px; /* Ajusta a tu necesidad */
+    object-fit: cover;
+  }
