@@ -847,28 +847,28 @@
                             </p>
                         </div>
                         <div class="card-body ">
-                            <form>
+                            <form id="generalContact">
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-medium">Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Tu nombre" />
+                                        <label  class="form-label fw-medium">Nombre</label>
+                                        <input type="text" class="form-control" placeholder="Tu nombre" id="name" required/>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Empresa</label>
-                                        <input type="text" class="form-control" placeholder="Nombre de la empresa" />
+                                        <input type="text" class="form-control" placeholder="Nombre de la empresa" id="companyName"/>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Email</label>
-                                    <input type="email" class="form-control" placeholder="tu@email.com" />
+                                    <input type="email" class="form-control" placeholder="nombre@email.com" id="email" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Teléfono</label>
-                                    <input type="tel" class="form-control" placeholder="+52 55 1234 5678" />
+                                    <input type="tel" class="form-control" placeholder="+52 55 1234 5678" id="phoneNumber"/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Mensaje</label>
-                                    <textarea class="form-control" rows="4"
+                                    <textarea class="form-control" rows="4" id="message"
                                         placeholder="Cuéntanos sobre tus necesidades de medicamentos especializados"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 mb-4">
