@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIFLOG - Solicitud de Medicamentos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo.png" alt="Logo" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+  <div class="container py-4">
+    <h2 class="fw-bold">Configura tu solicitud de medicamentos</h2>
+    <p class="text-muted">Por favor marca los medicamentos que deseas agregar a tu pedido.</p>
+
+    <div class="bg-white p-4 rounded shadow-sm mt-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Inventario de Medicamentos</h5>
+        <button class="btn btn-success ms-auto" id="btnSolicitar">Solicitar Pedido (0)</button>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <input type="text" class="form-control me-2 flex-grow-1" placeholder="Buscar medicamento por nombre, principio activo o laboratorio..." id="searchInput" />
+        <button class="btn btn-link text-danger p-0 small" data-bs-toggle="modal" data-bs-target="#modalNoDisponible">
+          No encuentro el medicamento que requiero
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle text-center" id="tablaMedicamentos">
+          <thead class="table-primary">
+            <tr>
+              <th><input type="checkbox" id="selectAll"></th>
+              <th>Nombre</th>
+              <th>Principio Activo</th>
+              <th>Concentración</th>
+              <th>Forma</th>
+              <th>Presentación</th>
+              <th>SKU</th>
+              <th>Código Barras</th>
+              <th>Laboratorio</th>
+              <th>Precio de Venta</th>
+            </tr>
+          </thead>
+          <tbody id="medicamentos-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="modalPedidoLabel">Revisar Pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <!-- CONTENIDO SCROLLEABLE -->
+      <div class="modal-body overflow-auto flex-grow-1">
+        <p class="text-muted mb-4">Revisa los medicamentos seleccionados y configura las cantidades.</p>
+        <div id="pedidoResumen" class="d-flex flex-column gap-3"></div>
+      </div>
+
+      <!-- TOTAL FIJO -->
+      <div class="bg-white border-top p-3 sticky-footer">
+        <div class="p-3 bg-light rounded border mb-3">
+          <h6 class="fw-bold mb-1">Total del Pedido</h6>
+          <div class="d-flex justify-content-between">
+            <span id="totalResumen" class="text-muted small"></span>
+            <strong class="text-primary" id="totalPrecio"></strong>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-dark w-50 me-2" data-bs-dismiss="modal">Volver atrás</button>
+          <button type="button" class="btn btn-success w-50" id="btnContinuar">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Datos del Solicitante -->
+<div class="modal fade" id="modalSolicitante" tabindex="-1" aria-labelledby="modalSolicitanteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Datos del Solicitante</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-muted mb-4">Complete sus datos personales para procesar la solicitud de medicamentos.</p>
+
+        <!-- Formulario de datos -->
+        <div class="p-4 bg-light rounded border mb-4">
+          <h6 class="fw-bold mb-3">Información Personal</h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nombre Completo *</label>
+              <input type="text" class="form-control" placeholder="Ingrese su nombre completo" data-required="true" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Correo Electrónico *</label>
+              <input type="email" class="form-control" placeholder="ejemplo@correo.com" data-required="true" data-type="email" required />
+              <div class="invalid-feedback d-block text-danger small mt-1" hidden>Correo electrónico inválido.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Teléfono *</label>
+              <input type="tel" class="form-control" placeholder="(55) 1234-5678" data-required="true" data-type="tel" required />
+              <div class="invalid-feedback d-block text-danger small mt-1" hidden>Teléfono inválido. Ej: 5512345678</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Empresa/Institución</label>
+              <input type="text" class="form-control" placeholder="Nombre de la empresa (opcional)" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Dirección de Entrega *</label>
+              <input type="text" class="form-control" placeholder="Calle, número, colonia, ciudad, código postal" data-required="true" required />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Observaciones</label>
+              <textarea class="form-control" rows="2" placeholder="Instrucciones especiales, horario de entrega, etc. (opcional)"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen del Pedido -->
+        <div class="p-4 bg-light rounded border">
+          <h6 class="fw-bold mb-3">Resumen del Pedido</h6>
+          <div id="resumenSolicitante"></div>
+          <hr />
+          <div class="d-flex justify-content-between fw-bold">
+            <span id="resumenTotalItems">0 medicamento(s) - 0 unidades</span>
+            <span class="text-primary" id="resumenTotalPrecio">$0.00 MXN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer justify-content-between">
+        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" id="btnEnviarSolicitud" disabled>
+          <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          <span class="btn-text">Enviar Solicitud</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="modalNoDisponible" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Solicitar Medicamentos No Disponibles</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted">Agrega los medicamentos que no encuentras en nuestro inventario y nos contactaremos contigo para cotizarlos.</p>
+          <div class="input-group mb-3">
+            <input type="text" id="inputNoDisponible" class="form-control" placeholder="Nombre del medicamento o principio activo">
+            <button class="btn btn-warning text-white" type="button" id="btnAgregarNoDisponible">Agregar</button>
+          </div>
+          <div id="listaNoDisponibles" class="mb-3">
+            <div id="mensajeVacio" class="text-center text-muted border border-dashed p-4 rounded">No has agregado medicamentos aún</div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-warning text-white" data-bs-toggle="modal" data-bs-target="#modalSolicitanteNoDisponibles">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Segundo Modal -->
+  <div class="modal fade" id="modalSolicitanteNoDisponibles" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Datos del Solicitante</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted mb-4">Complete sus datos personales para procesar la solicitud de medicamentos personalizados.</p>
+          <div class="p-4 bg-light rounded border mb-4">
+            <h6 class="fw-bold mb-3">Información Personal</h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre Completo *</label>
+                <input type="text" class="form-control" id="nombreSolicitanteNP" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Correo Electrónico *</label>
+                <input type="email" class="form-control" id="correoSolicitanteNP" required />
+                <div class="invalid-feedback d-block text-danger small mt-1" id="errorCorreoNP" hidden>Correo inválido</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono *</label>
+                <input type="tel" class="form-control" id="telefonoSolicitanteNP" required />
+                <div class="invalid-feedback d-block text-danger small mt-1" id="errorTelefonoNP" hidden>Teléfono inválido</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Empresa/Institución</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Dirección de Entrega *</label>
+                <input type="text" class="form-control" id="direccionSolicitanteNP" required />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Observaciones</label>
+                <textarea class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 rounded border bg-light-subtle border-warning-subtle">
+            <h6 class="fw-bold mb-3">Medicamentos Solicitados</h6>
+            <div id="resumenNoDisponibles" class="mb-3" style="max-height: 300px; overflow-y: auto;"></div>
+            <hr />
+            <div class="d-flex justify-content-between align-items-center fw-bold">
+              <span id="totalNoDisponibles">0 medicamento(s) personalizado(s)</span>
+              <span class="text-warning">Cotización pendiente</span>
+            </div>
+            <small class="text-muted">Nos contactaremos con usted</small>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-warning text-white" id="btnEnviarNoDisponibles" disabled>
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="btn-text">Enviar Solicitud</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/products.js"></script>
+</body>
+</html>

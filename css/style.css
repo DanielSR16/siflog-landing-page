@@ -30,3 +30,40 @@ h1 span {
     height: 500px; /* Ajusta a tu necesidad */
     object-fit: cover;
   }
+
+input[type="text"] {
+  flex: 1;
+  min-width: 250px;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+@media (max-width: 576px) {
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  input[type="text"] {
+    min-width: 100%;
+  }
+}
+
+.modal-body {
+  padding-top: 0;
+}
+
+.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background-color: white;
+}
