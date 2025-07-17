@@ -61,6 +61,8 @@ const medicamentos = [
   },
 ];
 
+const seleccionadosSku = new Set();
+
 const tbody = document.getElementById("medicamentos-body");
 const btnSolicitar = document.getElementById("btnSolicitar");
 
@@ -75,7 +77,7 @@ function renderTabla() {
   medicamentos.forEach((med, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td><input type="checkbox" class="med-check" data-index="${index}"></td>
+      <input type="checkbox" class="med-check" data-sku="${med.sku}" ${seleccionadosSku.has(med.sku) ? "checked" : ""}>
       <td>${med.nombre}</td>
       <td>${med.principio}</td>
       <td>${med.concentracion}</td>
@@ -84,11 +86,22 @@ function renderTabla() {
       <td>${med.sku}</td>
       <td>${med.codigoBarras}</td>
       <td>${med.laboratorio}</td>
-      <td>${formatter.format(med.precio)}</td>
     `;
     tbody.appendChild(row);
   });
 }
+
+document.addEventListener("change", (e) => {
+  if (e.target.classList.contains("med-check")) {
+    const sku = e.target.dataset.sku;
+    if (e.target.checked) {
+      seleccionadosSku.add(sku);
+    } else {
+      seleccionadosSku.delete(sku);
+    }
+    actualizarContador();
+  }
+});
 
 function actualizarContador() {
   const seleccionados = document.querySelectorAll(".med-check:checked").length;
@@ -113,13 +126,42 @@ document.getElementById("searchInput").addEventListener("input", function () {
   const filtro = this.value.trim().toLowerCase();
 
   const filtrados = medicamentos.filter((med) => {
-    return Object.values(med).some((valor) =>
-      String(valor).toLowerCase().includes(filtro)
+    return (
+      med.nombre.toLowerCase().includes(filtro) ||
+      med.principio.toLowerCase().includes(filtro) ||
+      med.laboratorio.toLowerCase().includes(filtro)
     );
   });
 
-  renderTablaMedicamentos(filtrados);
+  renderTablaFiltrada(filtrados);
 });
+
+function renderTablaFiltrada(lista) {
+  tbody.innerHTML = "";
+
+  const formatter = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+  });
+
+  lista.forEach((med, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <input type="checkbox" class="med-check" data-sku="${med.sku}" ${seleccionadosSku.has(med.sku) ? "checked" : ""}>
+      <td>${med.nombre}</td>
+      <td>${med.principio}</td>
+      <td>${med.concentracion}</td>
+      <td>${med.forma}</td>
+      <td>${med.presentacion}</td>
+      <td>${med.sku}</td>
+      <td>${med.codigoBarras}</td>
+      <td>${med.laboratorio}</td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  actualizarContador();
+}
 
 
 document.getElementById("btnSolicitar").addEventListener("click", () => {
@@ -128,7 +170,6 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
 
   const container = document.getElementById("pedidoResumen");
   const totalResumen = document.getElementById("totalResumen");
-  const totalPrecio = document.getElementById("totalPrecio");
 
   container.innerHTML = "";
   let total = 0;
@@ -139,22 +180,21 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
     currency: "MXN",
   });
 
-  const pedido = [];
+  const pedido = Array.from(seleccionadosSku).map(sku => medicamentos.find(m => m.sku === sku));
 
   seleccionados.forEach((cb) => {
-    const index = cb.dataset.index;
-    const med = medicamentos[index];
+    const sku = cb.dataset.sku;
+    const med = medicamentos.find((m) => m.sku === sku);
 
-    const cantidad = 1; // Valor inicial
-    const subtotal = med.precio * cantidad;
-
-    pedido.push({ ...med, index, cantidad });
+    const cantidad = 1;
+    pedido.push({ ...med, cantidad });
 
     const card = document.createElement("div");
-    card.className = "p-3 border rounded pedido-item";
-    card.dataset.index = index;
+    card.className = "p-3 border rounded pedido-item position-relative";
+    card.dataset.sku = med.sku;
 
     card.innerHTML = `
+      <button class="btn-close position-absolute top-0 end-0 me-2 mt-2" aria-label="Eliminar" data-sku="${med.sku}"></button>      
       <h6 class="fw-bold mb-0">${med.nombre}</h6>
       <div class="text-muted small">${med.principio}<br>${med.concentracion} - ${med.forma}</div>
       <div class="d-flex align-items-center gap-2 my-2">
@@ -169,50 +209,69 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
                 max="${med.disponible}" 
                 value="1" 
                 class="form-control d-inline-block w-auto cantidad-input" 
-                data-index="${index}" />
+                data-sku="${med.sku}" />
           <small class="text-muted ms-2">Disponible: ${med.disponible}</small>
           <div class="invalid-feedback d-block text-danger small mt-1" style="display:none;">
             No puedes pedir más de ${med.disponible} piezas.
           </div>
         </div>
         <div class="text-end">
-          <small class="text-muted precio-unitario">${formatter.format(med.precio)} c/u</small><br />
-          <strong class="text-success subtotal">${formatter.format(med.precio)}</strong>
         </div>
       </div>
     `;
     container.appendChild(card);
   });
 
+  setTimeout(() => {
+    document.querySelectorAll(".pedido-item .btn-close").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sku = btn.dataset.sku;
+
+        seleccionadosSku.delete(sku);
+
+        const checkbox = document.querySelector(`.med-check[data-sku="${sku}"]`);
+        if (checkbox) checkbox.checked = false;
+
+        btn.closest(".pedido-item").remove();
+
+        recalcularTotales();
+        actualizarContador();
+
+        const remainingItems = document.querySelectorAll(".pedido-item").length;
+        if (remainingItems === 0) {
+          const modal = bootstrap.Modal.getInstance(document.getElementById("modalPedido"));
+          if (modal) modal.hide();
+        }
+      });
+    });
+  }, 100);
+
   function recalcularTotales() {
     total = 0;
     totalUnidades = 0;
 
     document.querySelectorAll(".pedido-item").forEach((item) => {
-      const index = item.dataset.index;
+
+      const sku = item.dataset.sku;
+      const med = medicamentos.find((m) => m.sku === sku);
       const input = item.querySelector(".cantidad-input");
-      const subtotalEl = item.querySelector(".subtotal");
 
       const cantidad = parseInt(input.value, 10) || 0;
-      const precio = medicamentos[index].precio;
-      const subtotal = cantidad * precio;
-
-      total += subtotal;
+      const precio = med.precio;
       totalUnidades += cantidad;
-
-      subtotalEl.textContent = formatter.format(subtotal);
     });
 
-    totalResumen.textContent = `${seleccionados.length} medicamento(s) - ${totalUnidades} unidades`;
-    totalPrecio.textContent = formatter.format(total);
+    const totalMedicamentos = document.querySelectorAll(".pedido-item").length;
+    totalResumen.textContent = `${totalMedicamentos} medicamento(s) - ${totalUnidades} unidades`;
   }
 
-  // Evento en todos los inputs de cantidad
   setTimeout(() => {
     document.querySelectorAll(".cantidad-input").forEach((input) => {
       input.addEventListener("input", () => {
-        const index = input.dataset.index;
-        const max = medicamentos[index].disponible;
+
+        const sku = input.dataset.sku;
+        const med = medicamentos.find(m => m.sku === sku);
+        const max = med.disponible;
         const value = parseInt(input.value, 10);
         const errorMsg = input.parentElement.querySelector(".invalid-feedback");
 
@@ -237,15 +296,13 @@ document.addEventListener("click", (e) => {
   if (e.target && e.target.id === "btnContinuar") {
     const resumen = document.getElementById("resumenSolicitante");
     const totalResumen = document.getElementById("totalResumen").textContent;
-    const totalPrecio = document.getElementById("totalPrecio").textContent;
 
     resumen.innerHTML = "";
 
     document.querySelectorAll(".pedido-item").forEach((item) => {
-      const index = item.dataset.index;
-      const med = medicamentos[index];
+      const sku = item.dataset.sku;
+      const med = medicamentos.find((m) => m.sku === sku);
       const cantidad = parseInt(item.querySelector(".cantidad-input").value);
-      const subtotal = med.precio * cantidad;
 
       const div = document.createElement("div");
       div.classList.add("mb-2", "pb-2", "border-bottom");
@@ -257,14 +314,6 @@ document.addEventListener("click", (e) => {
           </div>
           <div class="text-end">
             <small>Cantidad: ${cantidad}</small><br>
-            <small>Precio: ${new Intl.NumberFormat('es-MX', {
-              style: 'currency',
-              currency: 'MXN'
-            }).format(med.precio)}</small><br>
-            <strong class="text-success">${new Intl.NumberFormat('es-MX', {
-              style: 'currency',
-              currency: 'MXN'
-            }).format(subtotal)}</strong>
           </div>
         </div>
       `;
@@ -272,7 +321,6 @@ document.addEventListener("click", (e) => {
     });
 
     document.getElementById("resumenTotalItems").textContent = totalResumen;
-    document.getElementById("resumenTotalPrecio").textContent = totalPrecio;
 
     bootstrap.Modal.getInstance(document.getElementById("modalPedido")).hide();
     new bootstrap.Modal(document.getElementById("modalSolicitante")).show();
@@ -290,33 +338,40 @@ document.addEventListener("click", (e) => {
   }
 
   document.addEventListener("input", () => {
-    const formFields = document.querySelectorAll('#modalSolicitante [data-required="true"]');
-    let allValid = true;
+    const campos = document.querySelectorAll('#modalSolicitante [data-required="true"]');
+    const btn = document.getElementById("btnEnviarSolicitud");
 
-    formFields.forEach((input) => {
-      const value = input.value.trim();
-      const tipo = input.getAttribute("data-type");
-      const errorEl = input.nextElementSibling;
+    let todosValidos = true;
 
-      if (!value) {
-        allValid = false;
-        if (errorEl) errorEl.hidden = true;
-        return;
-      }
+    campos.forEach((campo) => {
+      const valor = campo.value.trim();
+      const tipo = campo.getAttribute("data-type");
+      const errorMsg = campo.nextElementSibling;
 
-      if (tipo === "email") {
-        const valido = validarCorreo(value);
-        allValid = allValid && valido;
-        if (errorEl) errorEl.hidden = valido;
+      let esValido = true;
+
+      if (!valor) {
+        esValido = false;
+        todosValidos = false;
+      } else if (tipo === "email") {
+        esValido = validarCorreo(valor);
+        if (!esValido) todosValidos = false;
       } else if (tipo === "tel") {
-        const valido = validarTelefono(value);
-        allValid = allValid && valido;
-        if (errorEl) errorEl.hidden = valido;
+        esValido = validarTelefono(valor);
+        if (!esValido) todosValidos = false;
       }
+
+      if (errorMsg && errorMsg.classList.contains("invalid-feedback")) {
+        errorMsg.style.display = (!valor || esValido) ? "none" : "block";
+      }
+
+      campo.classList.toggle("is-invalid", !esValido && valor);
     });
 
-    document.getElementById("btnEnviarSolicitud").disabled = !allValid;
+    btn.disabled = !todosValidos;
   });
+
+  /////////
 
   document.getElementById("btnEnviarSolicitud").addEventListener("click", function () {
     const button = this;
@@ -330,27 +385,27 @@ document.addEventListener("click", (e) => {
     setTimeout(() => {
       const modal = bootstrap.Modal.getInstance(document.getElementById("modalSolicitante"));
       if (modal) modal.hide();
+
+      document.getElementById("confirmCantidadNuevo").textContent = `${seleccionadosSku.size} medicamento(s)`;
+
+      const modalFinal = new bootstrap.Modal(document.getElementById("modalSolicitudEnviadaNuevoPedido"));
+      modalFinal.show();
+
       spinner.classList.add("d-none");
       text.textContent = "Enviar Solicitud";
+      button.disabled = false;
     }, 2000);
   });
+    
+  
+///////////
 
 const btnAgregarNoDisponible = document.getElementById("btnAgregarNoDisponible");
 const inputNoDisponible = document.getElementById("inputNoDisponible");
 const listaNoDisponibles = document.getElementById("listaNoDisponibles");
 const btnContinuarNoDisponible = document.getElementById("btnContinuarNoDisponible");
-const listaMedicamentosNoDisponibles = [];
+const medicamentosNoDisponibles = [];
 
-btnAgregarNoDisponible.addEventListener("click", () => {
-  const valor = inputNoDisponible.value.trim();
-  if (!valor) return;
-
-  listaMedicamentosNoDisponibles.push(valor);
-  inputNoDisponible.value = "";
-
-  renderMedicamentosSolicitados(listaMedicamentosNoDisponibles);
-  btnContinuarNoDisponible.disabled = false;
-});
 
 function renderMedicamentosSolicitados(lista) {
   if (lista.length === 0) {
@@ -410,128 +465,223 @@ function renderMedicamentosSolicitados(lista) {
   btnContinuarNoDisponible.disabled = false;
 }
 
-
-// Render inicial del estado vacío
-renderMedicamentosSolicitados(listaMedicamentosNoDisponibles);
-
-const input = document.getElementById("inputNoDisponible");
-const btnAgregar = document.getElementById("btnAgregarNoDisponible");
-const lista = document.getElementById("listaNoDisponibles");
-const mensajeVacio = document.getElementById("mensajeVacio");
-const medicamentosList = [];
-
-btnAgregar.addEventListener("click", () => {
+document.getElementById("btnAgregarNoDisponible").addEventListener("click", () => {
+  const input = document.getElementById("inputNoDisponible");
   const nombre = input.value.trim();
   if (!nombre) return;
 
-  medicamentosList.push({ nombre, observaciones: "" });
+  medicamentosNoDisponibles.push({ nombre, observaciones: "" });
   input.value = "";
-
-  localStorage.setItem("medicamentosNoDisponibles", JSON.stringify(medicamentosList));
-  renderMedicamentos();
+  renderMedicamentosNoDisponibles();
 });
 
-function renderMedicamentos() {
-  lista.innerHTML = "";
-  if (medicamentosList.length === 0) {
-    lista.appendChild(mensajeVacio);
+function renderMedicamentosNoDisponibles() {
+  const lista = document.getElementById("listaNoDisponibles");
+
+  if (medicamentosNoDisponibles.length === 0) {
+    lista.innerHTML = `
+      <div class="border rounded text-center p-4" style="border-style: dashed; color: #9ca3af;">
+        <p class="mb-1 fw-bold" style="color: #6b7280;">No has agregado medicamentos aún</p>
+        <small>Utiliza el campo de arriba para agregar los medicamentos que necesitas</small>
+      </div>`;
     return;
   }
-  medicamentosList.forEach((med, index) => {
-    const div = document.createElement("div");
-    div.className = "bg-white rounded shadow-sm p-3 mb-2";
-    div.innerHTML = `
-      <div class="fw-bold mb-1">${med.nombre}</div>
-      <label class="text-muted small">Observaciones adicionales (opcional)</label>
-      <textarea class="form-control form-control-sm mb-2" placeholder="Especificaciones adicionales, dosis, presentación requerida, etc." data-index="${index}" oninput="actualizarObservaciones(this)"></textarea>
-      <button class="btn btn-sm btn-outline-danger" onclick="eliminarMedicamento(${index})">Eliminar</button>
-    `;
-    lista.appendChild(div);
+
+  const container = document.createElement("div");
+  container.className = "bg-light border rounded p-3";
+
+  const titulo = document.createElement("h6");
+  titulo.className = "fw-bold mb-3";
+  titulo.textContent = `Medicamentos Solicitados (${lista.length})`;
+  container.appendChild(titulo);
+
+  medicamentosNoDisponibles.forEach((medicamento, index) => {
+    const card = document.createElement("div");
+    card.className = "bg-white rounded border p-3 mb-3 position-relative";
+
+    const nombre = document.createElement("h6");
+    nombre.className = "fw-bold";
+    nombre.textContent = medicamento.nombre;
+
+    const labelObs = document.createElement("label");
+    labelObs.className = "form-label text-muted small mt-2";
+    labelObs.textContent = "Observaciones adicionales (opcional)";
+
+    const textarea = document.createElement("textarea");
+    textarea.className = "form-control";
+    textarea.rows = 2;
+    textarea.placeholder = "Especificaciones adicionales, dosis, presentación requerida, etc.";
+    textarea.setAttribute("data-index", index);
+    textarea.value = medicamento.observaciones || "";
+
+    const btnDelete = document.createElement("button");
+    btnDelete.className = "btn-close position-absolute top-0 end-0 m-3";
+    btnDelete.setAttribute("aria-label", "Eliminar");
+
+    btnDelete.addEventListener("click", () => {
+      lista.splice(index, 1);
+      renderMedicamentosSolicitados(lista);
+    });
+
+    card.appendChild(nombre);
+    card.appendChild(labelObs);
+    card.appendChild(textarea);
+    card.appendChild(btnDelete);
+
+    container.appendChild(card);
+  });
+
+  listaNoDisponibles.innerHTML = "";
+  listaNoDisponibles.appendChild(container);
+  btnContinuarNoDisponible.disabled = false;
+}
+
+document.addEventListener("input", (e) => {
+  if (e.target.tagName === "TEXTAREA" && e.target.dataset.index) {
+    const index = e.target.dataset.index;
+    medicamentosNoDisponibles[index].observaciones = e.target.value;
+  }
+});
+
+function eliminarMedicamento(index) {
+  medicamentosNoDisponibles.splice(index, 1);
+  renderMedicamentosNoDisponibles();
+}
+
+document.addEventListener("input", (e) => {
+  if (e.target.tagName === "TEXTAREA" && e.target.dataset.index) {
+    const index = e.target.dataset.index;
+    medicamentosNoDisponibles[index].observaciones = e.target.value;
+  }
+});
+
+const btnContinuar = document.getElementById("btnContinuarDatosSolicitante");
+
+if (btnContinuar) {
+  btnContinuar.addEventListener("click", () => {
+    if (medicamentosNoDisponibles.length === 0) {
+      alert("Agrega al menos un medicamento antes de continuar.");
+      return;
+    }
+
+    const modalNoDisponible = bootstrap.Modal.getInstance(document.getElementById("modalNoDisponible"));
+    if (modalNoDisponible) modalNoDisponible.hide();
+
+    setTimeout(() => {
+      const contenedor = document.getElementById("listaMedicamentosSolicitados");
+      if (!contenedor) {
+        console.error("No se encontró #listaMedicamentosSolicitados");
+        return;
+      }
+
+      contenedor.innerHTML = "";
+
+      medicamentosNoDisponibles.forEach((med) => {
+        const div = document.createElement("div");
+        div.className = "p-2 border rounded mb-2 bg-white";
+        div.innerHTML = `<strong>${med.nombre}</strong><br><small class="text-muted">Observaciones: ${med.observaciones || 'Ninguna'}</small>`;
+        contenedor.appendChild(div);
+      });
+
+      const modalDatos = new bootstrap.Modal(document.getElementById("modalDatosSolicitante"));
+      modalDatos.show();
+    }, 300);
   });
 }
 
-function actualizarObservaciones(textarea) {
-  const index = textarea.getAttribute("data-index");
-  medicamentosList[index].observaciones = textarea.value;
-  localStorage.setItem("medicamentosNoDisponibles", JSON.stringify(medicamentosList));
-}
+function renderizarMedicamentosSolicitados() {
+  const contenedor = document.getElementById("listaMedicamentosSolicitados");
+  contenedor.innerHTML = "";
 
-function eliminarMedicamento(index) {
-  medicamentosList.splice(index, 1);
-  localStorage.setItem("medicamentosNoDisponibles", JSON.stringify(medicamentosList));
-  renderMedicamentos();
-}
-
-// Al abrir el segundo modal
-document.getElementById("modalSolicitanteNoDisponibles").addEventListener("show.bs.modal", () => {
-  const resumen = document.getElementById("resumenNoDisponibles");
-  const total = document.getElementById("totalNoDisponibles");
-  const meds = JSON.parse(localStorage.getItem("medicamentosNoDisponibles")) || [];
-
-  if (meds.length === 0) {
-    resumen.innerHTML = "<div class='text-muted text-center'>No se agregaron medicamentos.</div>";
-  } else {
-    resumen.innerHTML = meds.map(med => `
-      <div class="bg-white rounded shadow-sm p-3 mb-2">
-        <div class="fw-bold mb-1">${med.nombre}</div>
-        ${med.observaciones ? "<div><strong class='text-muted'>Observaciones:</strong> " + med.observaciones + "</div>" : ""}
-      </div>
-    `).join("");
+  if (medicamentosNoDisponibles.length === 0) {
+    contenedor.innerHTML = '<div class="text-muted">No se han agregado medicamentos.</div>';
+    return;
   }
 
-  total.textContent = `${meds.length} medicamento(s) personalizado(s)`;
+  medicamentosNoDisponibles.forEach((med) => {
+    const div = document.createElement("div");
+    div.className = "p-2 border rounded mb-2 bg-white";
+    div.innerHTML = `<strong>${med.nombre}</strong><br><small class="text-muted">Observaciones: ${med.observaciones}</small>`;
+    contenedor.appendChild(div);
+  });
+}
+
+let limpiezaHabilitada = true;
+
+function limpiarMedicamentos() {
+  if (!limpiezaHabilitada) return;
+  medicamentosNoDisponibles.length = 0;
+  renderMedicamentosNoDisponibles();
+  const listaFinal = document.getElementById("listaMedicamentosSolicitados");
+  if (listaFinal) listaFinal.innerHTML = "";
+}
+
+document.getElementById("modalNoDisponible")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
+document.getElementById("modalDatosSolicitante")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
+
+document.getElementById("btnContinuarDatosSolicitante").addEventListener("click", () => {
+  limpiezaHabilitada = false;
+  setTimeout(() => limpiezaHabilitada = true, 1000);
 });
 
-// Validaciones para el formulario
-const camposNP = {
-  nombre: document.getElementById("nombreSolicitanteNP"),
-  correo: document.getElementById("correoSolicitanteNP"),
-  telefono: document.getElementById("telefonoSolicitanteNP"),
-  direccion: document.getElementById("direccionSolicitanteNP"),
-  botonEnviar: document.getElementById("btnEnviarNoDisponibles"),
-};
+document.getElementById("modalNoDisponible")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
+document.getElementById("modalDatosSolicitante")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
 
-const validacionesNP = {
-  correo: (v) => /^[^s@]+@[^s@]+.[^s@]+$/.test(v),
-  telefono: (v) => /^d{10}$/.test(v.replace(/[^d]/g, "")),
-};
+document.addEventListener("input", () => {
+  const campos = document.querySelectorAll('#modalDatosSolicitante [data-required="true"]');
+  const btn = document.getElementById("btnEnviarSolicitudNoDisponibles");
 
-function validarFormularioNP() {
-  const nombre = camposNP.nombre.value.trim();
-  const correo = camposNP.correo.value.trim();
-  const telefono = camposNP.telefono.value.trim();
-  const direccion = camposNP.direccion.value.trim();
+  let todosValidos = true;
 
-  const correoOK = correo === "" || validacionesNP.correo(correo);
-  const telefonoOK = telefono === "" || validacionesNP.telefono(telefono);
+  campos.forEach((campo) => {
+    const valor = campo.value.trim();
+    const tipo = campo.getAttribute("data-type");
+    const errorMsg = campo.nextElementSibling;
 
-  document.getElementById("errorCorreoNP").hidden = correoOK || correo === "";
-  document.getElementById("errorTelefonoNP").hidden = telefonoOK || telefono === "";
+    let esValido = true;
 
-  const formularioValido = nombre && correo && direccion && validacionesNP.correo(correo) && validacionesNP.telefono(telefono);
-  camposNP.botonEnviar.disabled = !formularioValido;
-}
+    if (!valor) {
+      esValido = false;
+      todosValidos = false;
+    } else if (tipo === "email") {
+      esValido = validarCorreo(valor);
+      if (!esValido) todosValidos = false;
+    } else if (tipo === "tel") {
+      esValido = validarTelefono(valor);
+      if (!esValido) todosValidos = false;
+    }
 
-for (const campo of Object.values(camposNP)) {
-  if (campo.tagName === "BUTTON") continue;
-  campo.addEventListener("input", validarFormularioNP);
-}
+    if (errorMsg && errorMsg.classList.contains("invalid-feedback")) {
+      errorMsg.style.display = (!valor || esValido) ? "none" : "block";
+    }
 
-camposNP.botonEnviar.addEventListener("click", function () {
-  const spinner = this.querySelector(".spinner-border");
-  const text = this.querySelector(".btn-text");
+    campo.classList.toggle("is-invalid", !esValido && valor);
+  });
+
+  btn.disabled = !todosValidos;
+});
+  
+document.getElementById("btnEnviarSolicitudNoDisponibles").addEventListener("click", function () {
+  const button = this;
+  const spinner = button.querySelector(".spinner-border");
+  const text = button.querySelector(".btn-text");
 
   spinner.classList.remove("d-none");
   text.textContent = "Enviando...";
-  this.disabled = true;
+  button.disabled = true;
 
   setTimeout(() => {
-    const modal = bootstrap.Modal.getInstance(document.getElementById("modalSolicitanteNoDisponibles"));
-    modal.hide();
+    const modal = bootstrap.Modal.getInstance(document.getElementById("modalDatosSolicitante"));
+    if (modal) modal.hide();
+
+    const confirmCantidad = document.getElementById("confirmCantidad");
+    confirmCantidad.textContent = `${medicamentosNoDisponibles.length} solicitud(es)`;
+
+    const modalFinal = new bootstrap.Modal(document.getElementById("modalSolicitudEnviada"));
+    modalFinal.show();
+
     spinner.classList.add("d-none");
     text.textContent = "Enviar Solicitud";
-    this.disabled = false;
+    button.disabled = false;
   }, 2000);
 });
-
-
