@@ -16,20 +16,33 @@ h1 span {
 }
 
 .nav-link:hover {
-  background-color: #dbeafe; 
-  border-radius: 0.375rem;  
-  transition: background-color 0.3s ease; 
+  background-color: #dbeafe;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease;
 }
 
 .hover-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
 }
 
-  .carousel-inner img {
-    height: 500px; /* Ajusta a tu necesidad */
-    object-fit: cover;
+.carousel-inner img {
+  height: 500px;
+  /* Ajusta a tu necesidad */
+  object-fit: cover;
+}
+
+#home {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (max-width: 767px) {
+  #home {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
+}
 
 input[type="text"] {
   flex: 1;
