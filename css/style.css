@@ -30,3 +30,15 @@ h1 span {
     height: 500px; /* Ajusta a tu necesidad */
     object-fit: cover;
   }
+
+    #home {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  @media (max-width: 767px) {
+    #home {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+  }
