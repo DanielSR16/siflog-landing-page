@@ -9,6 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin=""
+    />
 </head>
 
 <body>
@@ -422,81 +428,60 @@
 
                             <div class="container">
                                 <div class="text-center position-relative overflow-hidden" style="max-width: 100%;">
+                                    <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
 
 
-                                    <img src="assets/mapa_puntos.png" alt="Mapa de México"
-                                        class="img-fluid rounded-3 shadow w-100"
-                                        style="max-height: 400px; object-fit: contain;" />
+                                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+                                    <script
+                                        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                                        crossorigin=""
+                                    ></script>
 
-                                    <div class="position-absolute top-0 start-0 w-100 h-100">
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                        const map = L.map("map").setView([24.701881, -100.368900], 5);
 
-                                        <!--CDMX-->
-                                        <div class="position-absolute translate-middle" style="left: 52%; top:65%;">
-                                            <div class="bg-danger rounded-circle border border-white border-3 d-flex align-items-center justify-content-center"
-                                                style="width: 20px; height: 20px;">
-                                                <div class="bg-white rounded-circle" style="width: 6px; height: 6px;">
-                                                </div>
-                                            </div>
-                                            <div class="position-absolute text-nowrap" style="left: 25px; top: -5px;">
-                                                <small
-                                                    class="bg-danger text-white px-2 py-1 rounded fw-bold">CDMX</small>
-                                            </div>
-                                        </div>
+                                        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                                            attribution: '&copy; OpenStreetMap contributors'
+                                        }).addTo(map);
 
-                                        <!--Guadalajara-->
-                                        <div class="position-absolute translate-middle" style="left: 42%; top:70%;">
-                                            <div class="bg-primary rounded-circle border border-white border-3 d-flex align-items-center justify-content-center"
-                                                style="width: 20px; height: 20px;">
-                                                <div class="bg-white rounded-circle" style="width: 6px; height: 6px;">
-                                                </div>
-                                            </div>
-                                            <div class="position-absolute text-nowrap" style="left: -105px; top: -5px;">
-                                                <small
-                                                    class="bg-primary text-white px-2 py-1 rounded fw-bold">Guadalajara</small>
-                                            </div>
-                                        </div>
+                                        const locations = [
+                                            { name: "CDMX (Principal)", coords: [19.4326, -99.1332], principal: true },
+                                            { name: "Guadalajara, Jalisco", coords: [20.6597, -103.3496] },
+                                            { name: "Monterrey, Nuevo León", coords: [25.6866, -100.3161] },
+                                            { name: "Puebla, Puebla", coords: [19.0414, -98.2063] },
+                                            { name: "Culiacán, Sinaloa", coords: [24.8091, -107.3940] },
+                                            { name: "Mérida, Yucatán", coords: [20.9674, -89.5926] }
+                                        ];
 
-                                        <!--Monterrey-->
-                                        <div class="position-absolute translate-middle" style="left: 56%; top:40%;">
-                                            <div class="bg-primary rounded-circle border border-white border-3 d-flex align-items-center justify-content-center"
-                                                style="width: 20px; height: 20px;">
-                                                <div class="bg-white rounded-circle" style="width: 6px; height: 6px;">
-                                                </div>
-                                            </div>
-                                            <div class="position-absolute text-nowrap" style="left: -95px; top: -5px;">
-                                                <small
-                                                    class="bg-primary text-white px-2 py-1 rounded fw-bold">Monterrey</small>
-                                            </div>
-                                        </div>
+                                        const redPinIcon = L.icon({
+                                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                                        iconSize: [32, 32],
+                                        iconAnchor: [16, 32],
+                                        popupAnchor: [0, -32]
+                                        });
 
-                                        <!--Puebla-->
-                                        <div class="position-absolute translate-middle" style="left: 56%; top:72%;">
-                                            <div class="bg-primary rounded-circle border border-white border-3 d-flex align-items-center justify-content-center"
-                                                style="width: 20px; height: 20px;">
-                                                <div class="bg-white rounded-circle" style="width: 6px; height: 6px;">
-                                                </div>
-                                            </div>
-                                            <div class="position-absolute text-nowrap" style="left: 25px; top: -5px;">
-                                                <small
-                                                    class="bg-primary text-white px-2 py-1 rounded fw-bold">Puebla</small>
-                                            </div>
-                                        </div>
+                                        const bluePinIcon = L.icon({
+                                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                                        iconSize: [32, 32],
+                                        iconAnchor: [16, 32],
+                                        popupAnchor: [0, -32]
+                                        });
 
-                                        <!--Culiacán-->
-                                        <div class="position-absolute translate-middle" style="left: 26%; top:40%;">
-                                            <div class="bg-primary rounded-circle border border-white border-3 d-flex align-items-center justify-content-center"
-                                                style="width: 20px; height: 20px;">
-                                                <div class="bg-white rounded-circle" style="width: 6px; height: 6px;">
-                                                </div>
-                                            </div>
-                                            <div class="position-absolute text-nowrap" style="left: -27px; top: -30px;">
-                                                <small
-                                                    class="bg-primary text-white px-2 py-1 rounded fw-bold">Culiacán</small>
-                                            </div>
-                                        </div>
+                                        locations.forEach((loc) => {
+                                        const icon = loc.principal ? redPinIcon : bluePinIcon;
 
-                                    </div>
+                                        const marker = L.marker(loc.coords, { icon }).addTo(map);
+
+                                        marker.bindTooltip(loc.name, { direction: "top" });
+
+                                        marker.on("click", () => {
+                                            alert(`Sucursal seleccionada: ${loc.name}`);
+                                        });
+                                        });
+                                        });
+                                    </script>
                                 </div>
                             </div>
 
