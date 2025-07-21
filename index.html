@@ -9,12 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        crossorigin=""
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
 
 <body>
@@ -39,8 +35,7 @@
         </div>
     </nav>
 
-    <section id="home" class="text-center "
-        style="background: linear-gradient(to right, #eff6ff, #e0e7ff); ">
+    <section id="home" class="text-center " style="background: linear-gradient(to right, #eff6ff, #e0e7ff); ">
         <div class="container">
             <span class="badge bg-primary mb-3 bg-opacity-10 text-primary mb-3 px-3 py-2">Expertos en Distribución
                 Farmacéutica</span>
@@ -52,7 +47,7 @@
             </p>
             <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 mt-3">
 
-                <a href="#" class="btn btn-primary mb-md-0 mb-2 ">
+                <a href="products.html"  class="btn btn-primary mb-md-0 mb-2 ">
                     <i class="bi bi-box-seam me-2 "></i>Ver stock y hacer pedido</a>
                 <a href="#contact" class="btn btn-outline-primary">
                     <i class="bi bi-telephone me-2"></i>Contactar Ahora</a>
@@ -205,7 +200,7 @@
 
                 <div
                     class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 mb-md-4 mt-md-5 mt-5">
-                    <a href="#" class="btn btn-primary">
+                    <a href="products.html"  class="btn btn-primary">
                         <i class="bi bi-box-seam me-2"></i>Ver stock y hacer pedido</a>
 
                 </div>
@@ -430,58 +425,53 @@
                                 <div class="text-center position-relative overflow-hidden" style="max-width: 100%;">
                                     <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
 
-
-                                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-                                    <script
-                                        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                                        crossorigin=""
-                                    ></script>
+    
 
                                     <script>
                                         document.addEventListener("DOMContentLoaded", function () {
-                                        const map = L.map("map").setView([24.701881, -100.368900], 5);
+                                            const map = L.map("map").setView([24.701881, -100.368900], 5);
 
-                                        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                                            attribution: '&copy; OpenStreetMap contributors'
-                                        }).addTo(map);
+                                            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                                                attribution: '&copy; OpenStreetMap contributors'
+                                            }).addTo(map);
 
-                                        const locations = [
-                                            { name: "CDMX (Principal)", coords: [19.4326, -99.1332], principal: true },
-                                            { name: "Guadalajara, Jalisco", coords: [20.6597, -103.3496] },
-                                            { name: "Monterrey, Nuevo León", coords: [25.6866, -100.3161] },
-                                            { name: "Puebla, Puebla", coords: [19.0414, -98.2063] },
-                                            { name: "Culiacán, Sinaloa", coords: [24.8091, -107.3940] },
-                                            { name: "Mérida, Yucatán", coords: [20.9674, -89.5926] }
-                                        ];
+                                            const locations = [
+                                                { name: "CDMX (Principal)", coords: [19.4326, -99.1332], principal: true },
+                                                { name: "Guadalajara, Jalisco", coords: [20.6597, -103.3496] },
+                                                { name: "Monterrey, Nuevo León", coords: [25.6866, -100.3161] },
+                                                { name: "Puebla, Puebla", coords: [19.0414, -98.2063] },
+                                                { name: "Culiacán, Sinaloa", coords: [24.8091, -107.3940] },
+                                                { name: "Mérida, Yucatán", coords: [20.9674, -89.5926] }
+                                            ];
 
-                                        const redPinIcon = L.icon({
-                                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                                        iconSize: [32, 32],
-                                        iconAnchor: [16, 32],
-                                        popupAnchor: [0, -32]
-                                        });
+                                            const redPinIcon = L.icon({
+                                                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                                                iconSize: [32, 32],
+                                                iconAnchor: [16, 32],
+                                                popupAnchor: [0, -32]
+                                            });
 
-                                        const bluePinIcon = L.icon({
-                                        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                                        iconSize: [32, 32],
-                                        iconAnchor: [16, 32],
-                                        popupAnchor: [0, -32]
-                                        });
+                                            const bluePinIcon = L.icon({
+                                                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                                                iconSize: [32, 32],
+                                                iconAnchor: [16, 32],
+                                                popupAnchor: [0, -32]
+                                            });
 
-                                        locations.forEach((loc) => {
-                                        const icon = loc.principal ? redPinIcon : bluePinIcon;
+                                            locations.forEach((loc) => {
+                                                const icon = loc.principal ? redPinIcon : bluePinIcon;
 
-                                        const marker = L.marker(loc.coords, { icon }).addTo(map);
+                                                const marker = L.marker(loc.coords, { icon }).addTo(map);
 
-                                        marker.bindTooltip(loc.name, { direction: "top" });
+                                                marker.bindTooltip(loc.name, { direction: "top" });
 
-                                        marker.on("click", () => {
-                                            alert(`Sucursal seleccionada: ${loc.name}`);
-                                        });
-                                        });
+                                                marker.on("click", () => {
+                                                    alert(`Sucursal seleccionada: ${loc.name}`);
+                                                });
+                                            });
                                         });
                                     </script>
+
                                 </div>
                             </div>
 
@@ -750,7 +740,7 @@
             </div>
         </div>
         <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 my-4">
-            <a href="#" class="btn btn-primary">
+            <a href="products.html"  class="btn btn-primary">
                 <i class="bi bi-box-seam me-2"></i>Ver stock y hacer pedido</a>
 
         </div>
@@ -845,23 +835,24 @@
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Empresa</label>
                                         <input type="text" class="form-control" placeholder="Nombre de la empresa"
-                                            id="companyNameContact" required/>
+                                            id="companyNameContact" required />
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Email</label>
                                     <input type="email" class="form-control" placeholder="nombre@email.com"
-                                        id="emailContact" required/>
+                                        id="emailContact" required />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Teléfono</label>
                                     <input type="tel" class="form-control" placeholder="+52 55 1234 5678"
-                                        id="phoneNumberContact" maxlength="10" required/>
+                                        id="phoneNumberContact" maxlength="10" required />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Mensaje</label>
                                     <textarea class="form-control" rows="4" id="messageContact"
-                                        placeholder="Cuéntanos sobre tus necesidades de medicamentos especializados" required></textarea>
+                                        placeholder="Cuéntanos sobre tus necesidades de medicamentos especializados"
+                                        required></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 mb-4">
                                     <i class="bi bi-send me-2"></i>
@@ -885,11 +876,12 @@
                             </p>
                         </div>
                         <div class="card-body">
-                            <form  id="feedback">
+                            <form id="feedback">
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Tu nombre" id="nameFeedback" required/>
+                                        <input type="text" class="form-control" placeholder="Tu nombre"
+                                            id="nameFeedback" required />
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Tipo</label>
@@ -903,7 +895,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Email</label>
-                                    <input type="email" class="form-control" placeholder="tu@email.com" id="emailFeedback" required/>
+                                    <input type="email" class="form-control" placeholder="tu@email.com"
+                                        id="emailFeedback" required />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Área relacionada</label>
@@ -919,7 +912,8 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Detalle</label>
                                     <textarea class="form-control" rows="4"
-                                        placeholder="Describe tu queja, sugerencia o comentario de manera detallada" id="detailsFeedback"></textarea>
+                                        placeholder="Describe tu queja, sugerencia o comentario de manera detallada"
+                                        id="detailsFeedback"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-warning w-100 mb-4">
                                     <i class="bi bi-send me-2"></i>
@@ -962,14 +956,13 @@
                                     <a href="#aboutUs" class="text-light opacity-75 text-decoration-none">Nosotros</a>
                                 </li>
                                 <li class="mb-2">
-                                    <a href="#coverage"
-                                        class="text-light opacity-75 text-decoration-none">Cobertura</a>
+                                    <a href="#coverage" class="text-light opacity-75 text-decoration-none">Cobertura</a>
                                 </li>
                                 <li class="mb-2">
                                     <a href="#commitment"
                                         class="text-light opacity-75 text-decoration-none">Compromiso</a>
                                 </li>
-                                 <li class="mb-2">
+                                <li class="mb-2">
                                     <a href="#contact"
                                         class="text-light opacity-75 text-decoration-none">Contáctanos</a>
                                 </li>
@@ -980,23 +973,21 @@
                         <div class="col-6 col-lg-6 text-start text-lg-end">
                             <h6 class="fw-bold mb-3">Contacto</h6>
                             <ul class="list-unstyled text-light opacity-75">
-                           
-                                <li
-                                    class="d-flex align-items-center justify-content-lg-end mb-2">
+
+                                <li class="d-flex align-items-center justify-content-lg-end mb-2">
                                     <i class="bi bi-telephone me-2"></i>
                                     <span>+52 961 458 51 25</span>
-                                    
+
                                 </li>
-                                <li
-                                    class="d-flex align-items-center justify-content-lg-end mb-2">
+                                <li class="d-flex align-items-center justify-content-lg-end mb-2">
                                     <i class="bi bi-envelope me-2"></i>
                                     <span>info@siflog.com</span>
-                                
+
                                 </li>
                                 <li class="d-flex align-items-center justify-content-lg-end mb-2">
                                     <i class="bi bi-geo-alt me-2"></i>
-                                    <span >Tuxtla Gutiérrez, Chiapas</span>
-                                    
+                                    <span>Tuxtla Gutiérrez, Chiapas</span>
+
                                 </li>
                             </ul>
                         </div>
@@ -1010,20 +1001,21 @@
                     <p class="text-light opacity-75 mb-3 mb-md-0">
                         © 2025 SIFLOG. Todos los derechos reservados.
                     </p>
-                     
+
                     <div class="d-flex gap-4 text-light opacity-75">
                         <a href="#" class="text-decoration-none text-light opacity-75">Política de Privacidad</a>
                         <a href="#" class="text-decoration-none text-light opacity-75">Términos de Servicio</a>
                     </div>
                 </div>
             </div>
-            
+
     </footer>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="js/main.js"></script>
 </body>
 
