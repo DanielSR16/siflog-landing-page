@@ -28,7 +28,7 @@
     <div class="bg-white p-4 rounded shadow-sm mt-4">
       <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
         <h5 class="mb-0">Inventario de Medicamentos</h5>
-        <button class="btn btn-success ms-auto" id="btnSolicitar">Solicitar Pedido (0)</button>
+        <button class="btn btn-primary ms-auto" id="btnSolicitar">Solicitar Pedido (0)</button>
       </div>
 
       <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
@@ -81,7 +81,7 @@
         </div>
         <div class="d-flex justify-content-between">
           <button type="button" class="btn btn-outline-dark w-50 me-2" data-bs-dismiss="modal">Volver atrás</button>
-          <button type="button" class="btn btn-success w-50" id="btnContinuar">Continuar</button>
+          <button type="button" class="btn btn-primary w-50" id="btnContinuar">Continuar</button>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
             </div>
             <div class="col-md-6">
               <label class="form-label">Teléfono *</label>
-              <input type="tel" class="form-control" placeholder="(55) 1234-5678" data-required="true" data-type="tel" required />
+              <input type="tel" class="form-control" placeholder="(55) 1234-5678" data-required="true" data-type="tel" maxlength="10" required />
               <div class="invalid-feedback">El número debe tener 10 dígitos.</div>
             </div>
             <div class="col-md-6">
@@ -154,9 +154,9 @@
 
 <div class="modal fade" id="modalSolicitudEnviadaNuevoPedido" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4" style="background-color: #fff7f0;">
+    <div class="modal-content p-4 bg-white">
       <div class="text-center mb-4">
-        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
           <i class="bi bi-check-lg fs-3"></i>
         </div>
         <h5 class="fw-bold">¡Solicitud Enviada!</h5>
@@ -183,7 +183,7 @@
       </p>
 
       <div class="d-grid mt-3">
-        <button class="btn btn-success fw-bold text-white" data-bs-dismiss="modal">Perfecto, entendido</button>
+        <button class="btn btn-primary fw-bold text-white" data-bs-dismiss="modal">Perfecto, entendido</button>
       </div>
     </div>
   </div>
@@ -200,7 +200,7 @@
           <p class="text-muted">Agrega los medicamentos que no encuentras en nuestro inventario y nos contactaremos contigo para cotizarlos.</p>
           <div class="input-group mb-3">
             <input type="text" id="inputNoDisponible" class="form-control" placeholder="Nombre del medicamento o principio activo">
-            <button class="btn btn-warning text-white" type="button" id="btnAgregarNoDisponible">Agregar</button>
+            <button class="btn btn-primary text-white" type="button" id="btnAgregarNoDisponible">Agregar</button>
           </div>
           <div id="listaNoDisponibles" class="mb-3">
             <div id="mensajeVacio" class="text-center text-muted border border-dashed p-4 rounded">No has agregado medicamentos aún</div>
@@ -208,7 +208,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
-          <button id="btnContinuarDatosSolicitante" class="btn btn-warning text-white">
+          <button id="btnContinuarDatosSolicitante" class="btn btn-primary text-white">
   Continuar
 </button>
         </div>
@@ -236,13 +236,13 @@
               <label class="form-label">Correo Electrónico *</label>
               <input type="email" class="form-control" placeholder="ejemplo@correo.com" data-required="true" data-type="email" />
               <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
-<div class="invalid-feedback">El número debe tener 10 dígitos.</div>
+              <!-- <div class="invalid-feedback">El número debe tener 10 dígitos.</div> -->
             </div>
             <div class="col-md-6">
               <label class="form-label">Teléfono *</label>
-              <input type="tel" class="form-control" placeholder="5512345678" data-required="true" data-type="tel" />
-              <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
-<div class="invalid-feedback">El número debe tener 10 dígitos.</div>
+              <input type="tel" class="form-control" placeholder="5512345678" data-required="true" data-type="tel" maxlength="10" />
+              <!-- <div class="invalid-feedback">Por favor ingresa un correo válido.</div> -->
+              <div class="invalid-feedback">El número debe tener 10 dígitos.</div>
             </div>
             <div class="col-md-6">
               <label class="form-label">Empresa/Institución</label>
@@ -259,7 +259,7 @@
           </div>
         </div>
 
-        <div class="p-3 rounded-3" style="background-color: #fff7f0;">
+        <div class="p-3 rounded-3 bg-light">
           <h6 class="fw-semibold mb-3">Medicamentos Solicitados</h6>
           <div id="listaMedicamentosSolicitados">
             <div class="p-2 border rounded mb-2 bg-white">
@@ -278,7 +278,7 @@
       </div>
       <div class="modal-footer border-0 pt-3">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button id="btnEnviarSolicitudNoDisponibles" class="btn btn-warning text-white" disabled>
+        <button id="btnEnviarSolicitudNoDisponibles" class="btn btn-primary text-white" disabled>
           <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           <span class="btn-text">Enviar Solicitud</span>
         </button>
@@ -289,9 +289,9 @@
 
 <div class="modal fade" id="modalSolicitudEnviada" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4" style="background-color: #fff7f0;">
+    <div class="modal-content p-4 bg-white">
       <div class="text-center mb-4">
-        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; background: orange;">
+        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mx-auto mb-3 bg-primary" style="width: 60px; height: 60px;">
           <i class="bi bi-check-lg fs-3"></i>
         </div>
         <h5 class="fw-bold">¡Solicitud Enviada!</h5>
@@ -322,7 +322,7 @@
       </p>
 
       <div class="d-grid mt-3">
-        <button class="btn btn-warning fw-bold text-white" data-bs-dismiss="modal">Perfecto, entendido</button>
+        <button class="btn btn-primary fw-bold text-white" data-bs-dismiss="modal">Perfecto, entendido</button>
       </div>
     </div>
   </div>
