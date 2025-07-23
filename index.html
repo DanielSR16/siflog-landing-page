@@ -47,7 +47,7 @@
             </p>
             <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 mt-3">
 
-                <a href="products.html"  class="btn btn-primary mb-md-0 mb-2 ">
+                <a href="products.html" class="btn btn-primary mb-md-0 mb-2 ">
                     <i class="bi bi-box-seam me-2 "></i>Ver stock y hacer pedido</a>
                 <a href="#contact" class="btn btn-outline-primary">
                     <i class="bi bi-telephone me-2"></i>Contactar Ahora</a>
@@ -200,7 +200,7 @@
 
                 <div
                     class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 mb-md-4 mt-md-5 mt-5">
-                    <a href="products.html"  class="btn btn-primary">
+                    <a href="products.html" class="btn btn-primary">
                         <i class="bi bi-box-seam me-2"></i>Ver stock y hacer pedido</a>
 
                 </div>
@@ -425,7 +425,7 @@
                                 <div class="text-center position-relative overflow-hidden" style="max-width: 100%;">
                                     <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
 
-    
+
 
                                     <script>
                                         document.addEventListener("DOMContentLoaded", function () {
@@ -740,7 +740,7 @@
             </div>
         </div>
         <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2 my-4">
-            <a href="products.html"  class="btn btn-primary">
+            <a href="products.html" class="btn btn-primary">
                 <i class="bi bi-box-seam me-2"></i>Ver stock y hacer pedido</a>
 
         </div>
@@ -800,133 +800,113 @@
         </div>
     </section>
 
+
     <section id="contact" class="py-5 bg-white">
         <div class="container py-1">
             <div class="text-center mb-5">
-                <h2 class="display-4 fw-bold text-dark mb-3">Contáctanos</h2>
-                <p class="lead text-secondary mx-auto" style="max-width: 600px;">
-                    Estamos aquí para ayudarte con tus necesidades de medicamentos especializados
+                <h2 class="display-4 fw-bold text-dark mb-3">¿Necesitas ayuda personalizada?</h2>
+                <p class="lead text-secondary mx-auto" style="max-width: 700px;">
+                    Estamos aquí para asesorarte en cada paso. Ya sea para adquirir medicamentos especializados,
+                    resolver dudas o hacernos sugerencias, ¡nos encantará escucharte!
                 </p>
             </div>
 
-            <div class="row g-5">
-                <!-- Contacto General -->
+            <div class="row align-items-center justify-content-center">
 
-                <div class="col-lg-6">
 
-                    <div class="card shadow border-0 h-100 p-2">
-                        <div class="card-header bg-white border-0 pb-0">
-                            <h5 class="card-title fw-bold">
-                                <i class="bi bi-envelope text-primary me-2"></i>
-                                Contacto General
-                            </h5>
-                            <p class="card-text text-secondary">
-                                Información comercial y solicitudes de servicios
-                            </p>
-                        </div>
-                        <div class="card-body ">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="card shadow-lg border-0" style="background-color: #f8f9fa;">
+                        <div class="card-body p-4 animate__animated animate__fadeInUp">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-envelope-paper-fill text-primary" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h2 class="text-center fw-bold mb-2">¿Listo para comenzar?</h2>
+                            <p class="text-center text-muted mb-4">Déjanos tus datos y te contactaremos lo antes
+                                posible.</p>
+
+                            <!-- Formulario -->
                             <form id="generalContact">
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Tu nombre" id="nameContact"
-                                            required />
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                            <input type="text" class="form-control" placeholder="Tu nombre"
+                                                id="nameContact" required />
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Empresa</label>
-                                        <input type="text" class="form-control" placeholder="Nombre de la empresa"
-                                            id="companyNameContact" required />
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                            <input type="text" class="form-control" placeholder="Nombre de la empresa"
+                                                id="companyNameContact" required />
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Tipo</label>
+                                    <select class="form-select" id="selectTypeFeedback" required>
+                                        <option value="">Seleccionar tipo</option>
+                                        <option value="information">Contacto en general</option>
+                                        <option value="suggestion">Quejas y sugerencias</option>
+                                    </select>
+                                </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Email</label>
-                                    <input type="email" class="form-control" placeholder="nombre@email.com"
-                                        id="emailContact" required />
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                        <input type="email" class="form-control" placeholder="nombre@email.com"
+                                            id="emailContact" required />
+                                    </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Teléfono</label>
-                                    <input type="tel" class="form-control" placeholder="+52 55 1234 5678"
-                                        id="phoneNumberContact" maxlength="10" required />
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                        <input type="tel" class="form-control" placeholder="+52 55 1234 5678"
+                                            id="phoneNumberContact" maxlength="10" required />
+                                    </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Mensaje</label>
                                     <textarea class="form-control" rows="4" id="messageContact"
-                                        placeholder="Cuéntanos sobre tus necesidades de medicamentos especializados"
-                                        required></textarea>
+                                        placeholder="Cuéntanos sobre tus necesidades" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100 mb-4">
-                                    <i class="bi bi-send me-2"></i>
-                                    Enviar Mensaje
+
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-send me-2"></i> Enviar Mensaje
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quejas y Sugerencias -->
-                <div class="col-lg-6">
-                    <div class="card shadow border-0 h-100 p-2">
-                        <div class="card-header bg-white border-0 pb-0">
-                            <h5 class="card-title fw-bold">
-                                <i class="bi bi-chat-square-dots text-warning me-2"></i>
-                                Quejas y Sugerencias
-                            </h5>
-                            <p class="card-text text-secondary">
-                                Tu opinión es importante para mejorar nuestros servicios
-                            </p>
-                        </div>
-                        <div class="card-body">
-                            <form id="feedback">
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Tu nombre"
-                                            id="nameFeedback" required />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Tipo</label>
-                                        <select class="form-select" id="selectTypeFeedback" required>
-                                            <option value="">Seleccionar tipo</option>
-                                            <option value="queja">Queja</option>
-                                            <option value="sugerencia">Sugerencia</option>
-                                            <option value="felicitacion">Felicitación</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Email</label>
-                                    <input type="email" class="form-control" placeholder="tu@email.com"
-                                        id="emailFeedback" required />
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Área relacionada</label>
-                                    <select class="form-select" id="selectAreaFeedback" required>
-                                        <option value="">Seleccionar área</option>
-                                        <option value="ventas">Ventas</option>
-                                        <option value="logistica">Logística</option>
-                                        <option value="calidad">Calidad</option>
-                                        <option value="servicio">Servicio al Cliente</option>
-                                        <option value="otro">Otro</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Detalle</label>
-                                    <textarea class="form-control" rows="4"
-                                        placeholder="Describe tu queja, sugerencia o comentario de manera detallada"
-                                        id="detailsFeedback"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-warning w-100 mb-4">
-                                    <i class="bi bi-send me-2"></i>
-                                    Enviar Reporte
-                                </button>
-                            </form>
 
-                        </div>
-                    </div>
+
+                <div class="col-lg-6 d-none d-lg-flex  flex-column justify-content-center ps-5">
+                    <h4 class="fw-bold mb-4">¿Por qué contactarnos?</h4>
+                    <ul class="list-unstyled fs-5 mb-4">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Atención rápida y
+                            personalizada</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Expertos en
+                            medicamentos</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Soporte confiable en
+                            todo México</li>
+                    </ul>
+                    <img src="assets/mujer_contacto.jpg" alt="Atención personalizada" class="img-fluid rounded shadow"
+                        style="max-height: 220px; object-fit: cover;" />
                 </div>
+
             </div>
         </div>
     </section>
+
+
 
     <footer class="bg-dark text-white py-5">
         <div class="container py-4">
