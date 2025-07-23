@@ -89,7 +89,7 @@ input[type="text"] {
 
 .map-point {
   position: absolute;
-  font-size: 35px; /* tamaño del icono */
+  font-size: 35px;
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
