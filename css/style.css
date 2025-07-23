@@ -86,3 +86,18 @@ input[type="text"] {
   width: 100%;
   border-radius: 12px;
 }
+
+.map-point {
+  position: absolute;
+  font-size: 35px; /* tamaño del icono */
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Si quieres que el icono sea más pequeño en mobile (opcional) */
+@media (max-width: 768px) {
+  .map-point {
+    font-size: 25px;
+  }
+}

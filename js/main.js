@@ -22,3 +22,10 @@ generalContact.addEventListener("submit", function (event) {
     console.log({ name, company,type,email,phone,message })
     generalContact.reset();
 });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  })
