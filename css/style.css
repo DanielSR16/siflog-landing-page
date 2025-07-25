@@ -89,7 +89,15 @@ input[type="text"] {
 
 .map-point {
   position: absolute;
-  font-size: 35px;
+  font-size: 17px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.map-point-mini {
+  position: absolute;
+  font-size: 10px;
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
@@ -98,9 +106,15 @@ input[type="text"] {
 /* Si quieres que el icono sea más pequeño en mobile (opcional) */
 @media (max-width: 768px) {
   .map-point {
-    font-size: 25px;
+    font-size: 10px;
   }
+  .map-point-mini {
+    font-size: 6px;
+  }
+
 }
+
+
 
 .point-top-color {
   color: #FFD966;
@@ -111,5 +125,8 @@ input[type="text"] {
 }
 
 .point-bottom-color {
-  color: #56A97F;
+  color: #2DB77E;
 }
+
+
+
