@@ -101,3 +101,15 @@ input[type="text"] {
     font-size: 25px;
   }
 }
+
+.point-top-color {
+  color: #FFD966;
+}
+
+.point-center-color {
+  color: #FF7373;
+}
+
+.point-bottom-color {
+  color: #56A97F;
+}
