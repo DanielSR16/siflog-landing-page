@@ -62,6 +62,7 @@ const medicamentos = [
 ];
 
 const seleccionadosSku = new Set();
+let dataTable; 
 
 const tbody = document.getElementById("medicamentos-body");
 const btnSolicitar = document.getElementById("btnSolicitar");
@@ -77,7 +78,9 @@ function renderTabla() {
   medicamentos.forEach((med, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <input type="checkbox" class="med-check" data-sku="${med.sku}" ${seleccionadosSku.has(med.sku) ? "checked" : ""}>
+      <td>
+        <input type="checkbox" class="med-check" data-sku="${med.sku}" ${seleccionadosSku.has(med.sku) ? "checked" : ""}>
+      </td>
       <td>${med.nombre}</td>
       <td>${med.principio}</td>
       <td>${med.concentracion}</td>
@@ -88,6 +91,13 @@ function renderTabla() {
       <td>${med.laboratorio}</td>
     `;
     tbody.appendChild(row);
+  });
+}
+
+function sincronizarCheckboxes() {
+  document.querySelectorAll(".med-check").forEach(checkbox => {
+    const sku = checkbox.dataset.sku;
+    checkbox.checked = seleccionadosSku.has(sku);
   });
 }
 
@@ -100,54 +110,116 @@ document.addEventListener("change", (e) => {
       seleccionadosSku.delete(sku);
     }
     actualizarContador();
+    actualizarSelectAll();
   }
 });
 
 function actualizarContador() {
-  const seleccionados = document.querySelectorAll(".med-check:checked").length;
-  btnSolicitar.textContent = `Solicitar Pedido (${seleccionados})`;
+  btnSolicitar.textContent = `Solicitar Pedido (${seleccionadosSku.size})`;
+}
+
+function actualizarSelectAll() {
+  const selectAllCheckbox = document.getElementById("selectAll");
+  const checkboxesVisibles = document.querySelectorAll(".med-check");
+  const checkboxesVisiblesSeleccionados = Array.from(checkboxesVisibles).filter(cb => seleccionadosSku.has(cb.dataset.sku));
+  
+  if (checkboxesVisibles.length === 0) {
+    selectAllCheckbox.checked = false;
+    selectAllCheckbox.indeterminate = false;
+  } else if (checkboxesVisiblesSeleccionados.length === checkboxesVisibles.length) {
+    selectAllCheckbox.checked = true;
+    selectAllCheckbox.indeterminate = false;
+  } else if (checkboxesVisiblesSeleccionados.length > 0) {
+    selectAllCheckbox.checked = false;
+    selectAllCheckbox.indeterminate = true;
+  } else {
+    selectAllCheckbox.checked = false;
+    selectAllCheckbox.indeterminate = false;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   renderTabla();
-  document.addEventListener("change", (e) => {
-    if (e.target.classList.contains("med-check")) {
-      actualizarContador();
-    }
-  });
+  
+  setTimeout(() => {
+    dataTable = $('#tablaMedicamentos').DataTable({
+      paging: true,
+      searching: true, 
+      info: false,
+      lengthChange: false,
+      pageLength: 2,
+      language: {
+        paginate: {
+          first: "Primero",
+          last: "Último",
+          next: "Siguiente",
+          previous: "Anterior"
+        },
+        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+        infoFiltered: "(filtrado de _MAX_ registros totales)",
+        lengthMenu: "Mostrar _MENU_ registros por página",
+        loadingRecords: "Cargando...",
+        processing: "Procesando...",
+        search: "Buscar:",
+        zeroRecords: "No se encontraron registros coincidentes",
+        emptyTable: "No hay datos disponibles en la tabla"
+      },
+      dom: 'rt<"bottom"p>', 
+      drawCallback: function(settings) {
+        sincronizarCheckboxes();
+        actualizarSelectAll();
+      }
+    });
+    
+    dataTable.on('page.dt', function() {
+      setTimeout(sincronizarCheckboxes, 10);
+    });
+    
+  }, 200);
 });
 
 document.getElementById("selectAll").addEventListener("change", function () {
-  document.querySelectorAll(".med-check").forEach(cb => cb.checked = this.checked);
+  const isChecked = this.checked;
+  
+  if (isChecked) {
+    medicamentos.forEach(med => {
+      seleccionadosSku.add(med.sku);
+    });
+  } else {
+    seleccionadosSku.clear();
+  }
+  
+  sincronizarCheckboxes();
   actualizarContador();
 });
 
 document.getElementById("searchInput").addEventListener("input", function () {
-  const filtro = this.value.trim().toLowerCase();
+  const filtro = this.value.trim();
 
-  const filtrados = medicamentos.filter((med) => {
-    return (
-      med.nombre.toLowerCase().includes(filtro) ||
-      med.principio.toLowerCase().includes(filtro) ||
-      med.laboratorio.toLowerCase().includes(filtro)
-    );
-  });
-
-  renderTablaFiltrada(filtrados);
+  if (dataTable) {
+    dataTable.search(filtro).draw();
+  } else {
+    const filtrados = medicamentos.filter((med) => {
+      return (
+        med.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+        med.principio.toLowerCase().includes(filtro.toLowerCase()) ||
+        med.laboratorio.toLowerCase().includes(filtro.toLowerCase())
+      );
+    });
+    renderTablaFiltrada(filtrados);
+  }
 });
 
 function renderTablaFiltrada(lista) {
   tbody.innerHTML = "";
 
-  const formatter = new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN",
-  });
-
   lista.forEach((med, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <input type="checkbox" class="med-check" data-sku="${med.sku}" ${seleccionadosSku.has(med.sku) ? "checked" : ""}>
+      <td>
+        <input type="checkbox" class="med-check" data-sku="${med.sku}" ${seleccionadosSku.has(med.sku) ? "checked" : ""}>
+      </td>
       <td>${med.nombre}</td>
       <td>${med.principio}</td>
       <td>${med.concentracion}</td>
@@ -161,12 +233,11 @@ function renderTablaFiltrada(lista) {
   });
 
   actualizarContador();
+  actualizarSelectAll();
 }
 
-
 document.getElementById("btnSolicitar").addEventListener("click", () => {
-  const seleccionados = document.querySelectorAll(".med-check:checked");
-  if (seleccionados.length === 0) return;
+  if (seleccionadosSku.size === 0) return;
 
   const container = document.getElementById("pedidoResumen");
   const totalResumen = document.getElementById("totalResumen");
@@ -180,14 +251,9 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
     currency: "MXN",
   });
 
-  const pedido = Array.from(seleccionadosSku).map(sku => medicamentos.find(m => m.sku === sku));
-
-  seleccionados.forEach((cb) => {
-    const sku = cb.dataset.sku;
+  Array.from(seleccionadosSku).forEach((sku) => {
     const med = medicamentos.find((m) => m.sku === sku);
-
-    const cantidad = 1;
-    pedido.push({ ...med, cantidad });
+    if (!med) return;
 
     const card = document.createElement("div");
     card.className = "p-3 border rounded pedido-item position-relative";
@@ -229,13 +295,13 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
 
         seleccionadosSku.delete(sku);
 
-        const checkbox = document.querySelector(`.med-check[data-sku="${sku}"]`);
-        if (checkbox) checkbox.checked = false;
+        sincronizarCheckboxes();
 
         btn.closest(".pedido-item").remove();
 
         recalcularTotales();
         actualizarContador();
+        actualizarSelectAll();
 
         const remainingItems = document.querySelectorAll(".pedido-item").length;
         if (remainingItems === 0) {
@@ -251,7 +317,6 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
     totalUnidades = 0;
 
     document.querySelectorAll(".pedido-item").forEach((item) => {
-
       const sku = item.dataset.sku;
       const med = medicamentos.find((m) => m.sku === sku);
       const input = item.querySelector(".cantidad-input");
@@ -268,7 +333,6 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
   setTimeout(() => {
     document.querySelectorAll(".cantidad-input").forEach((input) => {
       input.addEventListener("input", () => {
-
         const sku = input.dataset.sku;
         const med = medicamentos.find(m => m.sku === sku);
         const max = med.disponible;
@@ -291,6 +355,7 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
   const modal = new bootstrap.Modal(document.getElementById("modalPedido"));
   modal.show();
 });
+
 
 document.addEventListener("click", (e) => {
   if (e.target && e.target.id === "btnContinuar") {
