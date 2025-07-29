@@ -56,342 +56,378 @@
     </section>
 
     <section class="py-md-4 mt-4">
-          <div class="container py-4">
-    <h2 class="display-5 fw-bold text-center">Configura tu solicitud de medicamentos</h2>
-    <p class="lead mt-3 mb-4 text-center">
+        <div class="container py-4">
+            <h2 class="display-5 fw-bold text-center">Configura tu solicitud de medicamentos</h2>
+            <p class="lead mt-3 mb-4 text-center">
                 Por favor marca los medicamentos que deseas agregar a tu pedido
             </p>
 
-    <div class="bg-white p-4 rounded shadow-sm mt-4">
-      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">Inventario de Medicamentos</h5>
-        <button class="btn btn-primary ms-auto" id="btnSolicitar">Solicitar Pedido (0)</button>
-      </div>
+            <div class="bg-white p-4 rounded shadow-sm mt-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Inventario de Medicamentos</h5>
+                    <button class="btn btn-primary ms-auto" id="btnSolicitar">Solicitar Pedido (0)</button>
+                </div>
 
-      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-        <input type="text" class="form-control me-2 flex-grow-1" placeholder="Buscar medicamento por nombre, principio activo o laboratorio..." id="searchInput" />
-        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalNoDisponible">
-            No encuentro el medicamento que requiero
-        </button>
-      </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                    <input type="text" class="form-control me-2 flex-grow-1"
+                        placeholder="Buscar medicamento por nombre, principio activo o laboratorio..."
+                        id="searchInput" />
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalNoDisponible">
+                        No encuentro el medicamento que requiero
+                    </button>
+                </div>
 
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle text-center" id="tablaMedicamentos">
-          <thead class="table-primary">
-            <tr>
-              <th><input type="checkbox" id="selectAll"></th>
-              <th>Nombre</th>
-              <th>Principio Activo</th>
-              <th>Concentración</th>
-              <th>Forma</th>
-              <th>Presentación</th>
-              <th>SKU</th>
-              <th>Código Barras</th>
-              <th>Laboratorio</th>
-            </tr>
-          </thead>
-          <tbody id="medicamentos-body">
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-<div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalPedidoLabel">Revisar Pedido</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-
-      <div class="modal-body overflow-auto flex-grow-1">
-        <p class="text-muted mb-4">Revisa los medicamentos seleccionados y configura las cantidades.</p>
-        <div id="pedidoResumen" class="d-flex flex-column gap-3"></div>
-      </div>
-
-      <div class="bg-white border-top p-3 sticky-footer">
-        <div class="p-3 bg-light rounded border mb-3">
-          <h6 class="fw-bold mb-1">Total del Pedido</h6>
-          <div class="d-flex justify-content-between">
-            <span id="totalResumen" class="text-muted small"></span>
-          </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle text-center" id="tablaMedicamentos">
+                        <thead class="table-primary">
+                            <tr>
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>Nombre</th>
+                                <th>Principio Activo</th>
+                                <th>Concentración</th>
+                                <th>Forma</th>
+                                <th>Presentación</th>
+                                <th>SKU</th>
+                                <th>Código Barras</th>
+                                <th>Laboratorio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="medicamentos-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-outline-dark w-50 me-2" data-bs-dismiss="modal">Volver atrás</button>
-          <button type="button" class="btn btn-primary w-50" id="btnContinuar">Continuar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="modal fade" id="modalPedido" tabindex="-1" aria-labelledby="modalPedidoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold" id="modalPedidoLabel">Revisar Pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
 
-<div class="modal fade" id="modalSolicitante" tabindex="-1" aria-labelledby="modalSolicitanteLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">Datos del Solicitante</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
+                    <div class="modal-body overflow-auto flex-grow-1">
+                        <p class="text-muted mb-4">Revisa los medicamentos seleccionados y configura las cantidades.</p>
+                        <div id="pedidoResumen" class="d-flex flex-column gap-3"></div>
+                    </div>
 
-      <div class="modal-body">
-        <p class="text-muted mb-4">Complete sus datos personales para procesar la solicitud de medicamentos.</p>
-
-        <div class="p-4 bg-light rounded border mb-4">
-          <h6 class="fw-bold mb-3">Información Personal</h6>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Nombre Completo *</label>
-              <input type="text" class="form-control" placeholder="Ingrese su nombre completo" data-required="true" required />
+                    <div class="bg-white border-top p-3 sticky-footer">
+                        <div class="p-3 bg-light rounded border mb-3">
+                            <h6 class="fw-bold mb-1">Total del Pedido</h6>
+                            <div class="d-flex justify-content-between">
+                                <span id="totalResumen" class="text-muted small"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-dark w-50 me-2" data-bs-dismiss="modal">Volver
+                                atrás</button>
+                            <button type="button" class="btn btn-primary w-50" id="btnContinuar">Continuar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Correo Electrónico *</label>
-              <input type="email" class="form-control" placeholder="ejemplo@correo.com" data-required="true" data-type="email" required />
-              <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Teléfono *</label>
-              <input type="tel" class="form-control" placeholder="(55) 1234-5678" data-required="true" data-type="tel" maxlength="10" required />
-              <div class="invalid-feedback">El número debe tener 10 dígitos.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Empresa/Institución</label>
-              <input type="text" class="form-control" placeholder="Nombre de la empresa (opcional)" />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Dirección de Entrega *</label>
-              <input type="text" class="form-control" placeholder="Calle, número, colonia, ciudad, código postal" data-required="true" required />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Observaciones</label>
-              <textarea class="form-control" rows="2" placeholder="Instrucciones especiales, horario de entrega, etc. (opcional)"></textarea>
-            </div>
-          </div>
         </div>
 
-        <div class="p-4 bg-light rounded border">
-          <h6 class="fw-bold mb-3">Resumen del Pedido</h6>
-          <div id="resumenSolicitante"></div>
-          <hr />
-          <div class="d-flex justify-content-between fw-bold">
-            <span id="resumenTotalItems">0 medicamento(s) - 0 unidades</span>
-          </div>
-        </div>
-      </div>
+        <div class="modal fade" id="modalSolicitante" tabindex="-1" aria-labelledby="modalSolicitanteLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Datos del Solicitante</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
 
-      <div class="modal-footer justify-content-between">
-        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary" id="btnEnviarSolicitud" disabled>
-          <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-          <span class="btn-text">Enviar Solicitud</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+                    <div class="modal-body">
+                        <p class="text-muted mb-4">Complete sus datos personales para procesar la solicitud de
+                            medicamentos.</p>
 
-<div class="modal fade" id="modalSolicitudEnviadaNuevoPedido" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4 bg-white">
-      <div class="text-center mb-4">
-        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
-          <i class="bi bi-check-lg fs-3"></i>
-        </div>
-        <h5 class="fw-bold">¡Solicitud Enviada!</h5>
-        <p class="text-muted mb-0">Su solicitud personalizada ha sido recibida</p>
-      </div>
+                        <div class="p-4 bg-light rounded border mb-4">
+                            <h6 class="fw-bold mb-3">Información Personal</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nombre Completo *</label>
+                                    <input type="text" class="form-control" placeholder="Ingrese su nombre completo"
+                                        data-required="true" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Correo Electrónico *</label>
+                                    <input type="email" class="form-control" placeholder="ejemplo@correo.com"
+                                        data-required="true" data-type="email" required />
+                                    <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Teléfono *</label>
+                                    <input type="tel" class="form-control" placeholder="(55) 1234-5678"
+                                        data-required="true" data-type="tel" maxlength="10" required />
+                                    <div class="invalid-feedback">El número debe tener 10 dígitos.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Empresa/Institución</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Nombre de la empresa (opcional)" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Dirección de Entrega *</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Calle, número, colonia, ciudad, código postal" data-required="true"
+                                        required />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Observaciones</label>
+                                    <textarea class="form-control" rows="2"
+                                        placeholder="Instrucciones especiales, horario de entrega, etc. (opcional)"></textarea>
+                                </div>
+                            </div>
+                        </div>
 
-      <div class="border rounded p-3 bg-white mb-3 d-flex justify-content-between align-items-center">
-        <div>
-          <small class="text-muted d-block">Medicamentos</small>
-          <strong id="confirmCantidadNuevo">-</strong>
-        </div>
-      </div>
+                        <div class="p-4 bg-light rounded border">
+                            <h6 class="fw-bold mb-3">Resumen del Pedido</h6>
+                            <div id="resumenSolicitante"></div>
+                            <hr />
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span id="resumenTotalItems">0 medicamento(s) - 0 unidades</span>
+                            </div>
+                        </div>
+                    </div>
 
-      <div class="border rounded p-3 mb-3" style="background-color: #e0efff;">
-        <strong class="text-primary d-block mb-2">Próximos pasos</strong>
-        <small class="text-dark">
-          Nuestro equipo buscará los medicamentos solicitados y le enviará una cotización detallada en las próximas 48 horas.
-          Nos pondremos en contacto con usted por correo electrónico.
-        </small>
-      </div>
-
-      <p class="text-center text-muted small">
-        ¿Necesita ayuda? Contáctenos al <span class="text-danger fw-bold">(55) 1234-5678</span>
-      </p>
-
-      <div class="d-grid mt-3">
-        <button class="btn btn-primary fw-bold text-white" data-bs-dismiss="modal">Perfecto, entendido</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-  <div class="modal fade" id="modalNoDisponible" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">Solicitar Medicamentos No Disponibles</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <p class="text-muted">Agrega los medicamentos que no encuentras en nuestro inventario y nos contactaremos contigo para cotizarlos.</p>
-        
-        <!-- Formulario para agregar medicamentos -->
-        <div class="bg-light p-3 rounded mb-3">
-          <h6 class="fw-bold mb-3">Información del Medicamento</h6>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Nombre comercial o principio activo *</label>
-              <input type="text" id="inputNombreMedicamento" class="form-control" placeholder="Ej: Paracetamol, Acetaminofén">
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" id="btnEnviarSolicitud" disabled>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"
+                                aria-hidden="true"></span>
+                            <span class="btn-text">Enviar Solicitud</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Presentación *</label>
-              <input type="text" id="inputPresentacion" class="form-control" placeholder="Ej: Tabletas 500mg, Jarabe 120ml">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Cantidad *</label>
-              <input type="number" id="inputCantidad" class="form-control" placeholder="Ej: 2" min="1">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Clave GOB (opcional)</label>
-              <input type="text" id="inputClaveGob" class="form-control" placeholder="Ej: 1234567890">
-            </div>
-          </div>
-          <div class="mt-3 text-end">
-            <button class="btn btn-primary text-white" type="button" id="btnAgregarNoDisponible" disabled>
-              <i class="bi bi-plus-circle me-1"></i>Agregar Medicamento
-            </button>
-          </div>
         </div>
 
-        <!-- Lista de medicamentos agregados -->
-        <div id="listaNoDisponibles" class="mb-3">
-          <div id="mensajeVacio" class="text-center text-muted border border-dashed p-4 rounded">
-            No has agregado medicamentos aún
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
-        <button id="btnContinuarDatosSolicitante" class="btn btn-primary text-white" disabled>
-          Continuar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="modal fade" id="modalSolicitudEnviadaNuevoPedido" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4 bg-white">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-check-lg fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold">¡Solicitud Enviada!</h5>
+                        <p class="text-muted mb-0">Su solicitud personalizada ha sido recibida</p>
+                    </div>
 
-  <div class="modal fade" id="modalDatosSolicitante" tabindex="-1" aria-labelledby="modalDatosSolicitanteLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content border-0 rounded-4">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-bold" id="modalDatosSolicitanteLabel">Datos del Solicitante</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body pt-1">
-        <p class="text-muted mb-4">Complete sus datos personales para procesar la solicitud de medicamentos personalizados.</p>
-        <div class="bg-light p-3 rounded-3 mb-4">
-          <h6 class="fw-semibold mb-3">Información Personal</h6>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Nombre Completo *</label>
-              <input type="text" class="form-control" placeholder="Ingrese su nombre completo" data-required="true" />
+                    <div class="border rounded p-3 bg-white mb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted d-block">Medicamentos</small>
+                            <strong id="confirmCantidadNuevo">-</strong>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-3" style="background-color: #e0efff;">
+                        <strong class="text-primary d-block mb-2">Próximos pasos</strong>
+                        <small class="text-dark">
+                            Nuestro equipo buscará los medicamentos solicitados y le enviará una cotización detallada en
+                            las próximas 48 horas.
+                            Nos pondremos en contacto con usted por correo electrónico.
+                        </small>
+                    </div>
+
+                    <p class="text-center text-muted small">
+                        ¿Necesita ayuda? Contáctenos al <span class="text-danger fw-bold">(55) 1234-5678</span>
+                    </p>
+
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-primary fw-bold text-white" data-bs-dismiss="modal">Perfecto,
+                            entendido</button>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Correo Electrónico *</label>
-              <input type="email" class="form-control" placeholder="ejemplo@correo.com" data-required="true" data-type="email" />
-              <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
-              <!-- <div class="invalid-feedback">El número debe tener 10 dígitos.</div> -->
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Teléfono *</label>
-              <input type="tel" class="form-control" placeholder="5512345678" data-required="true" data-type="tel" maxlength="10" />
-              <!-- <div class="invalid-feedback">Por favor ingresa un correo válido.</div> -->
-              <div class="invalid-feedback">El número debe tener 10 dígitos.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Empresa/Institución</label>
-              <input type="text" class="form-control" placeholder="Nombre de la empresa (opcional)" />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Dirección de Entrega *</label>
-              <input type="text" class="form-control" placeholder="Calle, número, colonia, ciudad, código postal" data-required="true" />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Observaciones</label>
-              <textarea class="form-control" rows="2" placeholder="Instrucciones especiales, horario de entrega, etc. (opcional)"></textarea>
-            </div>
-          </div>
         </div>
 
-        <div class="p-3 rounded-3 bg-light">
-          <h6 class="fw-semibold mb-3">Medicamentos Solicitados</h6>
-          <div id="listaMedicamentosSolicitados">
-            <div class="p-2 border rounded mb-2 bg-white">
-              <strong>pepto</strong><br />
-              <small class="text-muted">Observaciones: necesito 10</small>
+        <div class="modal fade" id="modalNoDisponible" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Solicitar Medicamentos No Disponibles</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-muted">Agrega los medicamentos que no encuentras en nuestro inventario y nos
+                            contactaremos contigo para cotizarlos.</p>
+
+                        <!-- Formulario para agregar medicamentos -->
+                        <div class="bg-light p-3 rounded mb-3">
+                            <h6 class="fw-bold mb-3">Información del Medicamento</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nombre comercial o principio activo *</label>
+                                    <input type="text" id="inputNombreMedicamento" class="form-control"
+                                        placeholder="Ej: Paracetamol, Acetaminofén">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Presentación *</label>
+                                    <input type="text" id="inputPresentacion" class="form-control"
+                                        placeholder="Ej: Tabletas 500mg, Jarabe 120ml">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Cantidad *</label>
+                                    <input type="number" id="inputCantidad" class="form-control" placeholder="Ej: 2"
+                                        min="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Clave GOB (opcional)</label>
+                                    <input type="text" id="inputClaveGob" class="form-control"
+                                        placeholder="Ej: 1234567890">
+                                </div>
+                            </div>
+                            <div class="mt-3 text-end">
+                                <button class="btn btn-primary text-white" type="button" id="btnAgregarNoDisponible"
+                                    disabled>
+                                    <i class="bi bi-plus-circle me-1"></i>Agregar Medicamento
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lista de medicamentos agregados -->
+                        <div id="listaNoDisponibles" class="mb-3">
+                            <div id="mensajeVacio" class="text-center text-muted border border-dashed p-4 rounded">
+                                No has agregado medicamentos aún
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="btnContinuarDatosSolicitante" class="btn btn-primary text-white" disabled>
+                            Continuar
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="mt-3 d-flex justify-content-between align-items-center">
-            <span class="fw-semibold">Total de Solicitudes</span>
-            <span class="text-end">
-              <span class="text-orange fw-semibold">Cotización pendiente</span><br />
-              <small class="text-muted">Nos contactaremos con usted</small>
-            </span>
-          </div>
         </div>
-      </div>
-      <div class="modal-footer border-0 pt-3">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button id="btnEnviarSolicitudNoDisponibles" class="btn btn-primary text-white" disabled>
-          <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-          <span class="btn-text">Enviar Solicitud</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="modal fade" id="modalSolicitudEnviada" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4 bg-white">
-      <div class="text-center mb-4">
-        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mx-auto mb-3 bg-primary" style="width: 60px; height: 60px;">
-          <i class="bi bi-check-lg fs-3"></i>
+        <div class="modal fade" id="modalDatosSolicitante" tabindex="-1" aria-labelledby="modalDatosSolicitanteLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content border-0 rounded-4">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold" id="modalDatosSolicitanteLabel">Datos del Solicitante</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body pt-1">
+                        <p class="text-muted mb-4">Complete sus datos personales para procesar la solicitud de
+                            medicamentos personalizados.</p>
+                        <div class="bg-light p-3 rounded-3 mb-4">
+                            <h6 class="fw-semibold mb-3">Información Personal</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nombre Completo *</label>
+                                    <input type="text" class="form-control" placeholder="Ingrese su nombre completo"
+                                        data-required="true" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Correo Electrónico *</label>
+                                    <input type="email" class="form-control" placeholder="ejemplo@correo.com"
+                                        data-required="true" data-type="email" />
+                                    <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
+                                    <!-- <div class="invalid-feedback">El número debe tener 10 dígitos.</div> -->
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Teléfono *</label>
+                                    <input type="tel" class="form-control" placeholder="5512345678" data-required="true"
+                                        data-type="tel" maxlength="10" />
+                                    <!-- <div class="invalid-feedback">Por favor ingresa un correo válido.</div> -->
+                                    <div class="invalid-feedback">El número debe tener 10 dígitos.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Empresa/Institución</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Nombre de la empresa (opcional)" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Dirección de Entrega *</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Calle, número, colonia, ciudad, código postal"
+                                        data-required="true" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Observaciones</label>
+                                    <textarea class="form-control" rows="2"
+                                        placeholder="Instrucciones especiales, horario de entrega, etc. (opcional)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-3 bg-light">
+                            <h6 class="fw-semibold mb-3">Medicamentos Solicitados</h6>
+                            <div id="listaMedicamentosSolicitados">
+                                <div class="p-2 border rounded mb-2 bg-white">
+                                    <strong>pepto</strong><br />
+                                    <small class="text-muted">Observaciones: necesito 10</small>
+                                </div>
+                            </div>
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold">Total de Solicitudes</span>
+                                <span class="text-end">
+                                    <span class="text-orange fw-semibold">Cotización pendiente</span><br />
+                                    <small class="text-muted">Nos contactaremos con usted</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pt-3">
+                        <button type="button" class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button id="btnEnviarSolicitudNoDisponibles" class="btn btn-primary text-white" disabled>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"
+                                aria-hidden="true"></span>
+                            <span class="btn-text">Enviar Solicitud</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h5 class="fw-bold">¡Solicitud Enviada!</h5>
-        <p class="text-muted mb-0">Su solicitud personalizada ha sido recibida</p>
-      </div>
 
-      <div class="border rounded p-3 bg-white mb-3 d-flex justify-content-between align-items-center">
-        <div>
-          <small class="text-muted d-block">Medicamentos</small>
-          <strong id="confirmCantidad">-</strong>
+        <div class="modal fade" id="modalSolicitudEnviada" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4 bg-white">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mx-auto mb-3 bg-primary"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-check-lg fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold">¡Solicitud Enviada!</h5>
+                        <p class="text-muted mb-0">Su solicitud personalizada ha sido recibida</p>
+                    </div>
+
+                    <div class="border rounded p-3 bg-white mb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted d-block">Medicamentos</small>
+                            <strong id="confirmCantidad">-</strong>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted d-block">Estado</small>
+                            <strong class="text-warning">Cotización Pendiente</strong>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-3" style="background-color: #e0efff;">
+                        <strong class="text-primary d-block mb-2">Próximos pasos</strong>
+                        <small class="text-dark">
+                            Nuestro equipo buscará los medicamentos solicitados y le enviará una cotización detallada en
+                            las próximas 48 horas.
+                            Nos pondremos en contacto con usted por correo electrónico.
+                        </small>
+                    </div>
+
+                    <p class="text-center text-muted small">
+                        ¿Necesita ayuda? Contáctenos al <span class="text-danger fw-bold">(55) 1234-5678</span>
+                    </p>
+
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-primary fw-bold text-white" data-bs-dismiss="modal">Perfecto,
+                            entendido</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="text-end">
-          <small class="text-muted d-block">Estado</small>
-          <strong class="text-warning">Cotización Pendiente</strong>
-        </div>
-      </div>
-
-      <div class="border rounded p-3 mb-3" style="background-color: #e0efff;">
-        <strong class="text-primary d-block mb-2">Próximos pasos</strong>
-        <small class="text-dark">
-          Nuestro equipo buscará los medicamentos solicitados y le enviará una cotización detallada en las próximas 48 horas.
-          Nos pondremos en contacto con usted por correo electrónico.
-        </small>
-      </div>
-
-      <p class="text-center text-muted small">
-        ¿Necesita ayuda? Contáctenos al <span class="text-danger fw-bold">(55) 1234-5678</span>
-      </p>
-
-      <div class="d-grid mt-3">
-        <button class="btn btn-primary fw-bold text-white" data-bs-dismiss="modal">Perfecto, entendido</button>
-      </div>
-    </div>
-  </div>
-</div>
     </section>
 
     <!-- <section class="py-md-4 mt-5">
@@ -651,197 +687,256 @@
 
 
 
-            <div class="col align-items-center">
-                <div class="row-lg-6 mt-md-5  ">
-                    <div class="card border-0 shadow bg-white ">
-                        <div class="card-body">
-                            <div class="container py-3">
-                                <div class="row justify-content-center text-center">
+            <div class="card border-0 shadow bg-white">
+                <div class="card-body p-0 position-relative d-flex align-items-center" style="min-height: 600px;">
 
-                                    <!-- Zona Norte -->
-                                    <div class="col-12 col-md-4 mb-5">
-                                        <div class="mb-3">
-                                            <span
-                                                class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 fw-semibold">Zona
-                                                Norte</span>
-                                        </div>
-                                        <div class="row text-start">
-                                            <div class="col-6 d-flex justify-content-end pe-3">
-                                                <div class="text-start">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-warning me-2"></i>
-                                                        <small>Monterrey</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-warning me-2"></i>
-                                                        <small>Sonora</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-warning me-2"></i>
-                                                    <small>Durango</small>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-warning me-2"></i> <small>Baja
-                                                        California</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <!-- Fondo con imagen completa -->
+                    <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/mapa_2.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.48;
+            z-index: 1;
+        "></div>
 
-                                    <!-- Zona Centro -->
-                                    <div class="col-12 col-md-4 mb-5">
-                                        <div class="mb-3">
-                                            <span
-                                                class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 fw-semibold">Zona
-                                                Centro</span>
-                                        </div>
-                                        <div class="row text-start">
-                                            <div class="col-6 d-flex justify-content-end pe-3">
-                                                <div class="text-start">
 
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-dark me-2"></i>
-                                                        <small>CDMX</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                                        <small>Querétaro</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                                        <small>Tlaxcala</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                                        <small>Guerrero</small>
-                                                    </div>
-                                                </div>
+                    <div class="container position-relative" style="z-index: 2;">
+                        <div class="row justify-content-center text-center">
+
+                            <div class="col-12 col-lg-4 pt-5 pt-lg-0 mb-5 d-lg-block text-center">
+                                <div class="mb-3">
+                                    <span
+                                        class="badge bg-warning bg-opacity-50 text-dark px-3 py-2 fw-semibold fs-4">Zona
+                                        Norte</span>
+                                </div>
+
+                                <!-- Vista celular -->
+                                <div class="row d-lg-none text-start">
+                                    <div class="col-6 d-flex justify-content-end pe-3">
+                                        <div class="text-start">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                                <small class="fs-5 fw-medium">Monterrey</small>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                                    <small>Puebla</small>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                                    <small>Guanajuato</small>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                                                    <small>Michoacán</small>
-                                                </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                                <small class="fs-5 fw-medium">Sonora</small>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Zona Sur -->
-                                    <div class="col-12 col-md-4 mb-5">
-                                        <div class="mb-3">
-                                            <span
-                                                class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 fw-semibold">Zona
-                                                Sur</span>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                            <small class="fs-5 fw-medium">Durango</small>
                                         </div>
-                                        <div class="row text-start">
-                                            <div class="col-6 d-flex justify-content-end pe-3">
-                                                 <div class="text-start">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                            <small class="fs-5 fw-medium">Baja California</small>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                    
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-dark me-2"></i>
-                                                        <small>Chiapas</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-dark me-2"></i>
-                                                        <small>Oaxaca</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-success me-2"></i>
-                                                        <small>Tabasco</small>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <i class="bi bi-geo-alt-fill text-success me-2"></i>
-                                                        <small>Veracruz</small>
-                                                    </div>
-                                                </div>
+                                <!-- vista computadora -->
+                                <div class="d-none d-lg-block">
+                                    <div class="d-flex flex-column align-items-center gap-2">
+                                        <div class=" ps-4">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                                <small class="fs-5 fw-medium">Monterrey</small>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-success me-2"></i>
-                                                    <small>Campeche</small>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-success me-2"></i>
-                                                    <small>Yucatán</small>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <i class="bi bi-geo-alt-fill text-success me-2"></i> <small>Quintana
-                                                        Roo</small>
-                                                </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                                <small class="fs-5 fw-medium">Sonora</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                                <small class="fs-5 fw-medium">Durango</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                                                <small class="fs-5 fw-medium">Baja California</small>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
-                            <h5 class="fw-bold text-center ">
-                                <i class="bi bi-map text-primary me-2"></i>
-                                Presencia Nacional
-                            </h5>
 
-                            <div class="container pb-5">
-                                <div class="position-relative w-100" style="max-width: 800px; margin: auto;">
-                                    <img src="assets/mapa_2.png" alt="Mapa de México" class="img-fluid w-100">
+                            <div class="col-12 col-lg-4 mb-5 d-lg-block text-center">
+                                <div class="mb-3">
+                                    <span
+                                        class="badge bg-danger bg-opacity-50 text-dark px-3 py-2 fw-semibold fs-4">Zona
+                                        Centro</span>
+                                </div>
+
+                                <!-- vista celular -->
+                                <div class="row d-lg-none text-start">
+                                    <div class="col-6 d-flex justify-content-end pe-3">
+                                        <div class="text-start">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <small class="fs-5 fw-bold">CDMX</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Querétaro</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Tlaxcala</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Guerrero</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                            <small class="fs-5 fw-medium">Puebla</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                            <small class="fs-5 fw-medium">Guanajuato</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                            <small class="fs-5 fw-medium">Michoacán</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- vista computadora -->
+                                <div class="d-none d-lg-block">
+                                    <div class="d-flex flex-column align-items-center gap-2">
+                                        <div class="ps-4">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <small class="fs-5 fw-bold">CDMX</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Querétaro</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Tlaxcala</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Guerrero</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Puebla</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Guanajuato</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                                                <small class="fs-5 fw-medium">Michoacán</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-                                    <i class="bi bi-circle-fill map-point point-top-color"
-                                        style="top: 35%; left: 52%;  " data-bs-toggle="tooltip" title="Monterrey"></i>
-                                    <i class="bi bi-circle-fill map-point point-top-color"
-                                        style="top: 15%; left: 17%;  " data-bs-toggle="tooltip" title="Sonora"></i>
-                                    <i class="bi bi-circle-fill map-point point-top-color"
-                                        style="top: 38%; left: 34%;  " data-bs-toggle="tooltip" title="Durango"></i>
-                                    <i class="bi bi-circle-fill map-point point-top-color" style="top: 5%; left: 4%;  "
-                                        data-bs-toggle="tooltip" title="Baja California"></i>
+                            <div class="col-12 col-lg-4 mb-5 d-lg-block text-center">
+                                <div class="mb-3">
+                                    <span
+                                        class="badge bg-success bg-opacity-50 text-dark px-3 py-2 fw-semibold fs-4">Zona
+                                        Sur</span>
+                                </div>
 
-                                    <i class="bi bi-circle-fill text-light map-point-mini"
-                                        style="top: 68%; left: 54.5%;" data-bs-toggle="tooltip" title="CDMX"></i>
-                                    <i class="bi bi-circle-fill map-point-mini point-center-color"
-                                        style="top: 60%; left: 51%;" data-bs-toggle="tooltip" title="Queretato"></i>
-                                    <i class="bi bi-circle-fill map-point-mini point-center-color"
-                                        style="top: 66.5%; left: 58%;" data-bs-toggle="tooltip" title="Tlaxcala"></i>
-                                    <i class="bi bi-circle-fill map-point point-center-color"
-                                        style="top: 77%; left: 52%;" data-bs-toggle="tooltip" title="Guerrero"></i>
-                                    <i class="bi bi-circle-fill map-point point-center-color"
-                                        style="top: 72%; left: 58%;" data-bs-toggle="tooltip" title="Puebla"></i>
-                                    <i class="bi bi-circle-fill map-point point-center-color"
-                                        style="top: 58%; left: 47%;" data-bs-toggle="tooltip" title="Guanajuato"></i>
-                                    <i class="bi bi-circle-fill map-point point-center-color"
-                                        style="top: 68%; left: 45%;" data-bs-toggle="tooltip" title="Michoacan"></i>
+                                <!-- vista para celular -->
+                                <div class="row d-lg-none text-start">
+                                    <div class="col-6 d-flex justify-content-end pe-3">
+                                        <div class="text-start">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <small class="fs-5 fw-bold">Chiapas</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <small class="fs-5 fw-bold">Oaxaca</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Tabasco</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Veracruz</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                            <small class="fs-5 fw-medium">Campeche</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                            <small class="fs-5 fw-medium">Yucatán</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                            <small class="fs-5 fw-medium">Quintana Roo</small>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    <i class="bi bi-circle-fill map-point text-light" style="top: 83%; left: 81%;"
-                                        data-bs-toggle="tooltip" title="Chiapas"></i>
-                                    <i class="bi bi-circle-fill map-point text-light" style="top: 81%; left: 65%;"
-                                        data-bs-toggle="tooltip" title="Oaxaca"></i>
-                                    <i class="bi bi-circle-fill map-point point-bottom-color"
-                                        style="top: 74%; left: 80%;" data-bs-toggle="tooltip" title="Tabasco"></i>
-                                    <i class="bi bi-circle-fill map-point point-bottom-color"
-                                        style="top: 67%; left: 64%;" data-bs-toggle="tooltip" title="Veracruz"></i>
-                                    <i class="bi bi-circle-fill map-point point-bottom-color "
-                                        style="top: 68%; left: 88%; " data-bs-toggle="tooltip" title="Campeche"></i>
-                                    <i class="bi bi-circle-fill map-point point-bottom-color"
-                                        style="top: 57%; left: 91%;" data-bs-toggle="tooltip" title="Yucatán"></i>
-                                    <i class="bi bi-circle-fill map-point point-bottom-color"
-                                        style="top: 63%; left: 95%;" data-bs-toggle="tooltip" title="Quintana Roo"></i>
+                                <!-- vista para pc -->
+                                <div class="d-none d-lg-block">
+                                    <div class="d-flex flex-column align-items-center gap-2">
+                                        <div class="ps-4">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <small class="fs-5 fw-bold">Chiapas</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <small class="fs-5 fw-bold">Oaxaca</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Tabasco</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Veracruz</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Campeche</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Yucatán</small>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-geo-alt-fill text-success me-2"></i>
+                                                <small class="fs-5 fw-medium">Quintana Roo</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
     </section>
 
