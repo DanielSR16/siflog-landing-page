@@ -9,7 +9,8 @@ const medicamentos = [
     codigoBarras: "7501031311309",
     laboratorio: "Laboratorios Pisa",
     precio: 45.0,
-    disponible: 150
+    disponible: 150,
+    gob: 939303
   },
   {
     nombre: "Amoxicilina",
@@ -21,7 +22,8 @@ const medicamentos = [
     codigoBarras: "7501031311310",
     laboratorio: "Laboratorios Sandoz",
     precio: 45.0,
-    disponible: 23
+    disponible: 23,
+    gob: 638892
   },
   {
     nombre: "Ibuprofeno",
@@ -33,7 +35,8 @@ const medicamentos = [
     codigoBarras: "7501031311311",
     laboratorio: "Laboratorios Liomont",
     precio: 45.0,
-    disponible: 124
+    disponible: 124,
+    gob: 19374
   },
   {
     nombre: "Metformina",
@@ -45,7 +48,8 @@ const medicamentos = [
     codigoBarras: "7501031311312",
     laboratorio: "Laboratorios Silanes",
     precio: 45.0,
-    disponible: 152
+    disponible: 152,
+    gob: 387837
   },
   {
     nombre: "Losartán",
@@ -57,7 +61,8 @@ const medicamentos = [
     codigoBarras: "7501031311313",
     laboratorio: "Laboratorios Chinoin",
     precio: 45.0,
-    disponible: 15
+    disponible: 15,
+    gob: 84638
   },
 ];
 
@@ -147,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       searching: true, 
       info: false,
       lengthChange: false,
-      pageLength: 2,
+      pageLength: 5,
       language: {
         paginate: {
           first: "Primero",
@@ -262,9 +267,8 @@ document.getElementById("btnSolicitar").addEventListener("click", () => {
     card.innerHTML = `
       <button class="btn-close position-absolute top-0 end-0 me-2 mt-2" aria-label="Eliminar" data-sku="${med.sku}"></button>      
       <h6 class="fw-bold mb-0">${med.nombre}</h6>
-      <div class="text-muted small">${med.principio}<br>${med.concentracion} - ${med.forma}</div>
+      <div class="text-muted small">Clave GOB: ${med.gob}<br>Sustancia: ${med.principio}<br>Presentación: ${med.concentracion} - ${med.forma}<br>Laboratorio: ${med.laboratorio}</div>
       <div class="d-flex align-items-center gap-2 my-2">
-        <span class="badge bg-light text-dark">${med.laboratorio}</span>
         <span class="badge bg-success">Disponible</span>
       </div>
       <div class="d-flex justify-content-between align-items-center border-top pt-2 mt-2">
@@ -375,7 +379,7 @@ document.addEventListener("click", (e) => {
         <div class="d-flex justify-content-between">
           <div>
             <strong>${med.nombre}</strong><br>
-            <small class="text-muted">${med.principio} – ${med.concentracion}<br>${med.laboratorio}</small>
+            <small class="text-muted">Clave GOB: ${med.gob}<br>Sustancia: ${med.principio}<br>Presentación: ${med.concentracion} - ${med.forma}<br>Laboratorio: ${med.laboratorio}</small>
           </div>
           <div class="text-end">
             <small>Cantidad: ${cantidad}</small><br>
@@ -470,85 +474,73 @@ const inputNoDisponible = document.getElementById("inputNoDisponible");
 const listaNoDisponibles = document.getElementById("listaNoDisponibles");
 const btnContinuarNoDisponible = document.getElementById("btnContinuarNoDisponible");
 const medicamentosNoDisponibles = [];
+const limpiezaHabilitada = false
+
+document.getElementById("modalNoDisponible").addEventListener('show.bs.modal', function (event) {
+  console.log('El modal de medicamentos no disponibles se está abriendo');
+   medicamentosNoDisponibles.length = 0;
+  renderMedicamentosNoDisponibles();
+});
 
 
-function renderMedicamentosSolicitados(lista) {
-  if (lista.length === 0) {
-    listaNoDisponibles.innerHTML = `
-      <div class="border rounded text-center p-4" style="border-style: dashed; color: #9ca3af;">
-        <p class="mb-1 fw-bold" style="color: #6b7280;">No has agregado medicamentos aún</p>
-        <small>Utiliza el campo de arriba para agregar los medicamentos que necesitas</small>
-      </div>`;
-    btnContinuarNoDisponible.disabled = true;
-    return;
-  }
 
-  const container = document.createElement("div");
-  container.className = "bg-light border rounded p-3";
+const inputNombreMedicamento = document.getElementById("inputNombreMedicamento");
+const inputPresentacion = document.getElementById("inputPresentacion");
+const inputCantidad = document.getElementById("inputCantidad");
+const inputClaveGob = document.getElementById("inputClaveGob");
 
-  const titulo = document.createElement("h6");
-  titulo.className = "fw-bold mb-3";
-  titulo.textContent = `Medicamentos Solicitados (${lista.length})`;
-  container.appendChild(titulo);
-
-  lista.forEach((medicamento, index) => {
-    const card = document.createElement("div");
-    card.className = "bg-white rounded border p-3 mb-3 position-relative";
-
-    const nombre = document.createElement("h6");
-    nombre.className = "fw-bold";
-    nombre.textContent = medicamento;
-
-    const labelObs = document.createElement("label");
-    labelObs.className = "form-label text-muted small mt-2";
-    labelObs.textContent = "Observaciones adicionales (opcional)";
-
-    const textarea = document.createElement("textarea");
-    textarea.className = "form-control";
-    textarea.rows = 2;
-    textarea.placeholder = "Especificaciones adicionales, dosis, presentación requerida, etc.";
-
-    const btnDelete = document.createElement("button");
-    btnDelete.className = "btn-close position-absolute top-0 end-0 m-3";
-    btnDelete.setAttribute("aria-label", "Eliminar");
-
-    btnDelete.addEventListener("click", () => {
-      lista.splice(index, 1);
-      renderMedicamentosSolicitados(lista);
-    });
-
-    card.appendChild(nombre);
-    card.appendChild(labelObs);
-    card.appendChild(textarea);
-    card.appendChild(btnDelete);
-
-    container.appendChild(card);
-  });
-
-  listaNoDisponibles.innerHTML = "";
-  listaNoDisponibles.appendChild(container);
-  btnContinuarNoDisponible.disabled = false;
+function validarCamposFormulario() {
+  const nombre = inputNombreMedicamento.value.trim();
+  const presentacion = inputPresentacion.value.trim();
+  const cantidad = inputCantidad.value.trim();
+  
+  const todosCamposValidos = nombre && presentacion && cantidad && parseInt(cantidad) > 0;
+  
+  document.getElementById("btnAgregarNoDisponible").disabled = !todosCamposValidos;
 }
 
-document.getElementById("btnAgregarNoDisponible").addEventListener("click", () => {
-  const input = document.getElementById("inputNoDisponible");
-  const nombre = input.value.trim();
-  if (!nombre) return;
+inputNombreMedicamento.addEventListener("input", validarCamposFormulario);
+inputPresentacion.addEventListener("input", validarCamposFormulario);
+inputCantidad.addEventListener("input", validarCamposFormulario);
 
-  medicamentosNoDisponibles.push({ nombre, observaciones: "" });
-  input.value = "";
+document.getElementById("btnAgregarNoDisponible").addEventListener("click", () => {
+  const nombre = inputNombreMedicamento.value.trim();
+  const presentacion = inputPresentacion.value.trim();
+  const cantidad = parseInt(inputCantidad.value.trim());
+  const claveGob = inputClaveGob.value.trim();
+  
+  if (!nombre || !presentacion || !cantidad || cantidad <= 0) return;
+  
+  const nuevoMedicamento = {
+    nombre: nombre,
+    presentacion: presentacion,
+    cantidad: cantidad,
+    claveGob: claveGob || "No especificada",
+    observaciones: ""
+  };
+  
+  medicamentosNoDisponibles.push(nuevoMedicamento);
+  
+  inputNombreMedicamento.value = "";
+  inputPresentacion.value = "";
+  inputCantidad.value = "";
+  inputClaveGob.value = "";
+  
+  document.getElementById("btnAgregarNoDisponible").disabled = true;
+  
   renderMedicamentosNoDisponibles();
 });
 
 function renderMedicamentosNoDisponibles() {
   const lista = document.getElementById("listaNoDisponibles");
+  const btnContinuar = document.getElementById("btnContinuarDatosSolicitante");
 
   if (medicamentosNoDisponibles.length === 0) {
     lista.innerHTML = `
-      <div class="border rounded text-center p-4" style="border-style: dashed; color: #9ca3af;">
-        <p class="mb-1 fw-bold" style="color: #6b7280;">No has agregado medicamentos aún</p>
-        <small>Utiliza el campo de arriba para agregar los medicamentos que necesitas</small>
+      <div id="mensajeVacio" class="text-center text-muted border border-dashed p-4 rounded">
+        No has agregado medicamentos aún
       </div>`;
+    btnContinuar.disabled = true;
     return;
   }
 
@@ -557,105 +549,59 @@ function renderMedicamentosNoDisponibles() {
 
   const titulo = document.createElement("h6");
   titulo.className = "fw-bold mb-3";
-  titulo.textContent = `Medicamentos Solicitados (${lista.length})`;
+  titulo.textContent = `Medicamentos Solicitados (${medicamentosNoDisponibles.length})`;
   container.appendChild(titulo);
 
   medicamentosNoDisponibles.forEach((medicamento, index) => {
     const card = document.createElement("div");
     card.className = "bg-white rounded border p-3 mb-3 position-relative";
 
-    const nombre = document.createElement("h6");
-    nombre.className = "fw-bold";
-    nombre.textContent = medicamento.nombre;
-
-    const labelObs = document.createElement("label");
-    labelObs.className = "form-label text-muted small mt-2";
-    labelObs.textContent = "Observaciones adicionales (opcional)";
-
-    const textarea = document.createElement("textarea");
-    textarea.className = "form-control";
-    textarea.rows = 2;
-    textarea.placeholder = "Especificaciones adicionales, dosis, presentación requerida, etc.";
-    textarea.setAttribute("data-index", index);
-    textarea.value = medicamento.observaciones || "";
-
-    const btnDelete = document.createElement("button");
-    btnDelete.className = "btn-close position-absolute top-0 end-0 m-3";
-    btnDelete.setAttribute("aria-label", "Eliminar");
-
-    btnDelete.addEventListener("click", () => {
-      lista.splice(index, 1);
-      renderMedicamentosSolicitados(lista);
-    });
-
-    card.appendChild(nombre);
-    card.appendChild(labelObs);
-    card.appendChild(textarea);
-    card.appendChild(btnDelete);
+    card.innerHTML = `
+      <button class="btn-close position-absolute top-0 end-0 m-3" aria-label="Eliminar" onclick="eliminarMedicamento(${index})"></button>
+      <h6 class="fw-bold mb-2">${medicamento.nombre}</h6>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <small class="text-muted"><strong>Presentación:</strong> ${medicamento.presentacion}</small>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted"><strong>Cantidad:</strong> ${medicamento.cantidad}</small>
+        </div>
+      </div>
+      <div class="mb-2">
+        <small class="text-muted"><strong>Clave GOB:</strong> ${medicamento.claveGob}</small>
+      </div>
+      <label class="form-label text-muted small mt-2">Observaciones adicionales (opcional)</label>
+      <textarea class="form-control" rows="2" placeholder="Especificaciones adicionales, dosis, presentación requerida, etc." 
+                data-index="${index}" onchange="actualizarObservaciones(${index}, this.value)">${medicamento.observaciones}</textarea>
+    `;
 
     container.appendChild(card);
   });
 
-  listaNoDisponibles.innerHTML = "";
-  listaNoDisponibles.appendChild(container);
-  btnContinuarNoDisponible.disabled = false;
+  lista.innerHTML = "";
+  lista.appendChild(container);
+  btnContinuar.disabled = false;
 }
 
-document.addEventListener("input", (e) => {
-  if (e.target.tagName === "TEXTAREA" && e.target.dataset.index) {
-    const index = e.target.dataset.index;
-    medicamentosNoDisponibles[index].observaciones = e.target.value;
+function actualizarObservaciones(index, valor) {
+  if (medicamentosNoDisponibles[index]) {
+    medicamentosNoDisponibles[index].observaciones = valor;
   }
-});
+}
 
 function eliminarMedicamento(index) {
   medicamentosNoDisponibles.splice(index, 1);
   renderMedicamentosNoDisponibles();
 }
 
-document.addEventListener("input", (e) => {
-  if (e.target.tagName === "TEXTAREA" && e.target.dataset.index) {
-    const index = e.target.dataset.index;
-    medicamentosNoDisponibles[index].observaciones = e.target.value;
-  }
-});
-
-const btnContinuar = document.getElementById("btnContinuarDatosSolicitante");
-
-if (btnContinuar) {
-  btnContinuar.addEventListener("click", () => {
-    if (medicamentosNoDisponibles.length === 0) {
-      alert("Agrega al menos un medicamento antes de continuar.");
-      return;
-    }
-
-    const modalNoDisponible = bootstrap.Modal.getInstance(document.getElementById("modalNoDisponible"));
-    if (modalNoDisponible) modalNoDisponible.hide();
-
-    setTimeout(() => {
-      const contenedor = document.getElementById("listaMedicamentosSolicitados");
-      if (!contenedor) {
-        console.error("No se encontró #listaMedicamentosSolicitados");
-        return;
-      }
-
-      contenedor.innerHTML = "";
-
-      medicamentosNoDisponibles.forEach((med) => {
-        const div = document.createElement("div");
-        div.className = "p-2 border rounded mb-2 bg-white";
-        div.innerHTML = `<strong>${med.nombre}</strong><br><small class="text-muted">Observaciones: ${med.observaciones || 'Ninguna'}</small>`;
-        contenedor.appendChild(div);
-      });
-
-      const modalDatos = new bootstrap.Modal(document.getElementById("modalDatosSolicitante"));
-      modalDatos.show();
-    }, 300);
-  });
-}
-
 function renderizarMedicamentosSolicitados() {
   const contenedor = document.getElementById("listaMedicamentosSolicitados");
+  
+  if (!contenedor) {
+    console.error("No se encontró #listaMedicamentosSolicitados");
+    return;
+  }
+  
   contenedor.innerHTML = "";
 
   if (medicamentosNoDisponibles.length === 0) {
@@ -666,31 +612,47 @@ function renderizarMedicamentosSolicitados() {
   medicamentosNoDisponibles.forEach((med) => {
     const div = document.createElement("div");
     div.className = "p-2 border rounded mb-2 bg-white";
-    div.innerHTML = `<strong>${med.nombre}</strong><br><small class="text-muted">Observaciones: ${med.observaciones}</small>`;
+    div.innerHTML = `
+      <strong>${med.nombre}</strong><br>
+      <small class="text-muted">
+        <strong>Presentación:</strong> ${med.presentacion}<br>
+        <strong>Cantidad:</strong> ${med.cantidad}<br>
+        <strong>Clave GOB:</strong> ${med.claveGob}<br>
+        <strong>Observaciones:</strong> ${med.observaciones || 'Ninguna'}
+      </small>
+    `;
     contenedor.appendChild(div);
   });
 }
 
-let limpiezaHabilitada = true;
 
-function limpiarMedicamentos() {
-  if (!limpiezaHabilitada) return;
-  medicamentosNoDisponibles.length = 0;
-  renderMedicamentosNoDisponibles();
-  const listaFinal = document.getElementById("listaMedicamentosSolicitados");
-  if (listaFinal) listaFinal.innerHTML = "";
-}
-
-document.getElementById("modalNoDisponible")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
-document.getElementById("modalDatosSolicitante")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
+document.getElementById("btnContinuarDatosSolicitante").removeEventListener("click", () => {}); // Remover el anterior
 
 document.getElementById("btnContinuarDatosSolicitante").addEventListener("click", () => {
-  limpiezaHabilitada = false;
-  setTimeout(() => limpiezaHabilitada = true, 1000);
+  if (medicamentosNoDisponibles.length === 0) {
+    alert("Agrega al menos un medicamento antes de continuar.");
+    return;
+  }
+
+  cambiarModal('modalNoDisponible', 'modalDatosSolicitante', () => {
+    renderizarMedicamentosSolicitados();
+  });
 });
 
-document.getElementById("modalNoDisponible")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
-document.getElementById("modalDatosSolicitante")?.addEventListener("hidden.bs.modal", limpiarMedicamentos);
+document.getElementById("modalNoDisponible").addEventListener('hidden.bs.modal', function() {
+  limpiezaCompleta();
+  
+  if (limpiezaHabilitada) {
+    limpiarMedicamentos();
+  }
+});
+document.getElementById("modalDatosSolicitante").addEventListener('hidden.bs.modal', function() {
+  limpiezaCompleta();
+  
+  if (limpiezaHabilitada) {
+    limpiarMedicamentos();
+  }
+});
 
 document.addEventListener("input", () => {
   const campos = document.querySelectorAll('#modalDatosSolicitante [data-required="true"]');
@@ -726,6 +688,7 @@ document.addEventListener("input", () => {
   btn.disabled = !todosValidos;
 });
   
+
 document.getElementById("btnEnviarSolicitudNoDisponibles").addEventListener("click", function () {
   const button = this;
   const spinner = button.querySelector(".spinner-border");
@@ -736,17 +699,98 @@ document.getElementById("btnEnviarSolicitudNoDisponibles").addEventListener("cli
   button.disabled = true;
 
   setTimeout(() => {
-    const modal = bootstrap.Modal.getInstance(document.getElementById("modalDatosSolicitante"));
-    if (modal) modal.hide();
+    const modalDatos = bootstrap.Modal.getInstance(document.getElementById("modalDatosSolicitante"));
+    if (modalDatos) {
+      modalDatos.hide();
+      
+      document.getElementById("modalDatosSolicitante").addEventListener('hidden.bs.modal', function handler() {
+        limpiezaCompleta();
+        
+        const confirmCantidad = document.getElementById("confirmCantidad");
+        confirmCantidad.textContent = `${medicamentosNoDisponibles.length} solicitud(es)`;
 
-    const confirmCantidad = document.getElementById("confirmCantidad");
-    confirmCantidad.textContent = `${medicamentosNoDisponibles.length} solicitud(es)`;
-
-    const modalFinal = new bootstrap.Modal(document.getElementById("modalSolicitudEnviada"));
-    modalFinal.show();
+        setTimeout(() => {
+          const modalFinal = new bootstrap.Modal(document.getElementById("modalSolicitudEnviada"));
+          modalFinal.show();
+        }, 100);
+        
+        this.removeEventListener('hidden.bs.modal', handler);
+      }, { once: true });
+    }
 
     spinner.classList.add("d-none");
     text.textContent = "Enviar Solicitud";
     button.disabled = false;
   }, 2000);
 });
+
+
+document.getElementById("modalSolicitudEnviada").addEventListener('hidden.bs.modal', function() {
+  limpiezaCompleta();
+  limpiarMedicamentos();
+});
+
+window.limpiarModalEmergencia = function() {
+  document.querySelectorAll('.modal.show').forEach(modal => {
+    const instance = bootstrap.Modal.getInstance(modal);
+    if (instance) instance.hide();
+  });
+  
+  setTimeout(() => {
+    limpiezaCompleta();
+    console.log('Modales limpiados completamente');
+  }, 500);
+};
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  limpiezaCompleta();
+});
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-backdrop')) {
+    limpiezaCompleta();
+  }
+});
+
+function limpiarBackdrops() {
+  document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+    backdrop.remove();
+  });
+  
+  document.body.classList.remove('modal-open');
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
+}
+
+function cambiarModal(modalActual, modalNuevo, callback = null) {
+  const instanciaActual = bootstrap.Modal.getInstance(document.getElementById(modalActual));
+  
+  if (instanciaActual) {
+    instanciaActual.hide();
+    
+    document.getElementById(modalActual).addEventListener('hidden.bs.modal', function handler() {
+      limpiezaCompleta();
+      
+      if (callback) callback();
+      
+      setTimeout(() => {
+        const nuevoModal = new bootstrap.Modal(document.getElementById(modalNuevo));
+        nuevoModal.show();
+      }, 100);
+      
+      this.removeEventListener('hidden.bs.modal', handler);
+    }, { once: true });
+  }
+}
+
+function limpiezaCompleta() {
+  document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+    backdrop.remove();
+  });
+  
+  document.body.classList.remove('modal-open');
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
+  document.body.style.marginRight = '';
+}
