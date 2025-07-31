@@ -28,7 +28,7 @@ h1 span {
 
 .carousel-inner img {
   height: 500px;
-  /* Ajusta a tu necesidad */
+  
   object-fit: cover;
 }
 
@@ -103,7 +103,6 @@ input[type="text"] {
   z-index: 10;
 }
 
-/* Si quieres que el icono sea más pequeño en mobile (opcional) */
 @media (max-width: 768px) {
   .map-point {
     font-size: 10px;
@@ -113,20 +112,4 @@ input[type="text"] {
   }
 
 }
-
-
-
-.point-top-color {
-  color: #FFD966;
-}
-
-.point-center-color {
-  color: #FF7373;
-}
-
-.point-bottom-color {
-  color: #2DB77E;
-}
-
-
 

@@ -1,6 +1,4 @@
 
-
-
 const generalContact = document.getElementById("generalContact");
 
 generalContact.addEventListener("submit", function (event) {
